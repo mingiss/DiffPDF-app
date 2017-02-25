@@ -20,10 +20,10 @@ RangesPair computeRanges(SequenceMatcher *matcher)
     Ranges ranges2;
     QList<Match> matches = matcher->get_matching_blocks();
     foreach (const Match &match, matches) {
-        if (match.size == 0)
+        if ((match.size_i == 0) && (match.size_j == 0))
             continue;
-        ranges1 |= unorderedRange(match.i + match.size, match.i);
-        ranges2 |= unorderedRange(match.j + match.size, match.j);
+        ranges1 |= unorderedRange(match.i + match.size_i, match.i);
+        ranges2 |= unorderedRange(match.j + match.size_j, match.j);
     }
     return qMakePair(ranges1, ranges2);
 }
@@ -44,7 +44,7 @@ bool matchLessThan(const Match &a, const Match &b)
         return a.i < b.i;
     if (a.j != b.j)
         return a.j < b.j;
-    return a.size < b.size;
+    return (b.size_i - a.size_i) + (b.size_j - a.size_j) > 0;
 }
 
 
@@ -60,8 +60,8 @@ struct Offsets
 };
 
 
-SequenceMatcher::SequenceMatcher(const Sequence &a_, const Sequence &b_)
-    : a(a_), b(b_)
+SequenceMatcher::SequenceMatcher(const Sequence &a_, const Sequence &b_, int iDiffType)
+    : a(a_), b(b_), m_iDiffType(iDiffType)
 {
     set_sequences(a, b);
 }
@@ -127,39 +127,82 @@ QList<Match> SequenceMatcher::get_matching_blocks()
                                                b_high);
         const int i = match.i;
         const int j = match.j;
-        const int k = match.size;
-        if (k) {
+        const int k_i = match.size_i;
+        const int k_j = match.size_j;
+        if (k_i || k_j)
+        {
             matching_blocks.append(match);
             if (a_low < i && b_low < j)
                 offsets.append(Offsets(a_low, i, b_low, j));
-            if (i + k < a_high && j + k < b_high)
-                offsets.append(Offsets(i + k, a_high, j + k, b_high));
+            if (i + k_i < a_high && j + k_j < b_high)
+                offsets.append(Offsets(i + k_i, a_high, j + k_j, b_high));
         }
     }
     qSort(matching_blocks.begin(), matching_blocks.end(), matchLessThan);
 
     int i1 = 0;
     int j1 = 0;
-    int k1 = 0;
+    int k_i1 = 0;
+    int k_j1 = 0;
     QList<Match> non_adjacent;
-    foreach (const Match match, matching_blocks) {
+    foreach (const Match match, matching_blocks)
+    {
         const int i2 = match.i;
         const int j2 = match.j;
-        const int k2 = match.size;
-        if (i1 + k1 == i2 && j1 + k1 == j2)
-            k1 += k2;
-        else {
-            if (k1)
-                non_adjacent.append(Match(i1, j1, k1));
+        const int k_i2 = match.size_i;
+        const int k_j2 = match.size_j;
+        if (i1 + k_i1 == i2 && j1 + k_j1 == j2)
+        {
+            k_i1 += k_i2;
+            k_j1 += k_j2;
+        }
+        else
+        {
+            if (k_i1 || k_j1)
+                non_adjacent.append(Match(i1, j1, k_i1, k_j1));
             i1 = i2;
             j1 = j2;
-            k1 = k2;
+            k_i1 = k_i2;
+            k_j1 = k_j2;
         }
     }
-    if (k1)
-        non_adjacent.append(Match(i1, j1, k1));
-    non_adjacent.append(Match(LengthA, LengthB, 0));
+    if (k_i1 || k_j1)
+        non_adjacent.append(Match(i1, j1, k_i1, k_j1));
+    non_adjacent.append(Match(LengthA, LengthB, 0, 0));
     matching_blocks = non_adjacent;
+
+    non_adjacent.clear();
+    Match prev_match;
+    bool first(true);
+    foreach (const Match match, matching_blocks)
+    {
+        if (first)
+        {
+            prev_match = match;
+            first = false;
+        }
+        else
+        {
+            bool insertion = (prev_match.i + prev_match.size_i == match.i);
+            bool deletion = (prev_match.j + prev_match.size_j == match.j);
+            if ((((m_iDiffType & SM_DIFF_DELETE) == 0) && deletion) ||
+                (((m_iDiffType & SM_DIFF_INSERT) == 0) && insertion) ||
+                (((m_iDiffType & SM_DIFF_REPLACE) == 0) && (!deletion) && (!insertion)))
+            {
+                prev_match.size_i = match.i - prev_match.i + match.size_i;
+                prev_match.size_j = match.j - prev_match.j + match.size_j;
+            }
+            else
+            {
+                non_adjacent.append(prev_match);
+                prev_match = match;
+            }
+        }
+    }
+    if (!first)
+        non_adjacent.append(prev_match);
+    matching_blocks = non_adjacent;
+
     return matching_blocks;
 }
 
@@ -199,5 +242,6 @@ Match SequenceMatcher::find_longest_match(int a_low, int a_high,
            a[best_i + best_size] == b[best_j + best_size])
         ++best_size;
 
-    return Match(best_i, best_j, best_size);
+    return Match(best_i, best_j, best_size, best_size);
 }
+

@@ -18,6 +18,12 @@
 #include <QString>
 #include <QStringList>
 
+// values for m_iDiffType
+#define SM_DIFF_DELETE  0x01
+#define SM_DIFF_REPLACE 0x02
+#define SM_DIFF_INSERT  0x04
+#define SM_DIFF_ALL     (SM_DIFF_DELETE | SM_DIFF_REPLACE | SM_DIFF_INSERT)
+
 typedef QStringList Sequence;
 typedef QString Element;
 
@@ -29,11 +35,14 @@ RangesPair invertRanges(const Ranges &ranges1, int length1,
 
 struct Match
 {
-    Match(int i_=0, int j_=0, int size_=0) : i(i_), j(j_), size(size_) {}
+    Match(int i_, int j_, int size_i_, int size_j_):
+        i(i_), j(j_), size_i(size_i_), size_j(size_j_) {}
+    Match() { Match(0, 0, 0, 0); }
 
     int i;
     int j;
-    int size;
+    int size_i;
+    int size_j;
 };
 
 
@@ -42,7 +51,8 @@ class SequenceMatcher
 {
 public:
     SequenceMatcher(const Sequence &a_=Sequence(),
-                    const Sequence &b_=Sequence());
+                    const Sequence &b_=Sequence(),
+                    int iDiffType = SM_DIFF_ALL);
 
     void set_sequences(const Sequence &a, const Sequence &b)
         { set_sequence1(a); set_sequence2(b); }
@@ -59,6 +69,10 @@ private:
     Sequence b;
     QHash<Element, QList<int> > b2j;
     QList<Match> matching_blocks;
+
+    // which diference to take into account
+    // any combination of SM_DIFF_DELETE, SM_DIFF_REPLACE or SM_DIFF_INSERT
+    int m_iDiffType;
 };
 
 #endif // SEQUENCE_MATCHER_HPP
