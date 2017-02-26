@@ -45,6 +45,10 @@
 #include <QSpinBox>
 #include <QSplitter>
 
+const QColor MainWindow::InitialColors[NumOfDiffColors] = {Qt::red, Qt::green, Qt::blue, Qt::magenta};
+const char* MainWindow::PenSettings[NumOfDiffColors] = {"Outline", "InsOutline", "DelOutline", "RepOutline"};
+const char* MainWindow::BrushSettings[NumOfDiffColors] = {"Fill", "InsFill", "DelFill", "RepFill"};
+const int MainWindow::DiffTypes[NumOfDiffColors] = {0, SM_DIFF_INSERT, SM_DIFF_DELETE, SM_DIFF_REPLACE };
 
 MainWindow::MainWindow(const Debug debug,
         const InitialComparisonMode comparisonMode,
@@ -61,12 +65,15 @@ MainWindow::MainWindow(const Debug debug,
 {
     currentPath = QDir::homePath();
     QSettings settings;
-    pen.setStyle(Qt::NoPen);
-    pen.setColor(Qt::red);
-    pen = settings.value("Outline", pen).value<QPen>();
-    brush.setColor(pen.color());
-    brush.setStyle(Qt::SolidPattern);
-    brush = settings.value("Fill", brush).value<QBrush>();
+    for (int ix(0); ix < NumOfDiffColors; ix++)
+    {
+        pens[ix].setStyle(Qt::NoPen);
+        pens[ix].setColor(InitialColors[ix]);
+        pens[ix] = settings.value(PenSettings[ix], pens[ix]).value<QPen>();
+        brushes[ix].setColor(pens[ix].color());
+        brushes[ix].setStyle(Qt::SolidPattern);
+        brushes[ix] = settings.value(BrushSettings[ix], brushes[ix]).value<QBrush>();
+    }
     showToolTips = settings.value("ShowToolTips", true).toBool();
     combineTextHighlighting = settings.value("CombineTextHighlighting",
             true).toBool();
@@ -891,30 +898,42 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
         QImage image2 = page2->renderToImage(DPI, DPI);
 
         if (compareComboBox->currentIndex() != CompareAppearance ||
-            showComboBox->currentIndex() == 0) {
-            QPainterPath highlighted1;
-            QPainterPath highlighted2;
-            if (hasVisualDifference || !compareText)
-                computeVisualHighlights(&highlighted1, &highlighted2,
+            showComboBox->currentIndex() == 0)
+        {
+            bool empty(true);
+            for (int ix(0); ix < NumOfDiffColors; ix++)
+            {
+                QPainterPath highlighted1;
+                QPainterPath highlighted2;
+                if ((ix == AppColor) && (hasVisualDifference || !compareText))
+                    computeVisualHighlights(&highlighted1, &highlighted2,
                         plainImage1, plainImage2);
-            else
-                computeTextHighlights(&highlighted1, &highlighted2, page1,
-                        page2, DPI);
-            if (!highlighted1.isEmpty())
-                paintOnImage(highlighted1, &image1);
-            if (!highlighted2.isEmpty())
-                paintOnImage(highlighted2, &image2);
-            if (highlighted1.isEmpty() && highlighted2.isEmpty()) {
+                else
+                    computeTextHighlights(&highlighted1, &highlighted2, page1,
+                        page2, DPI, DiffTypes[ix]);
+                if (!highlighted1.isEmpty())
+                    paintOnImage(highlighted1, &image1, (DiffColors)ix);
+                if (!highlighted2.isEmpty())
+                    paintOnImage(highlighted2, &image2, (DiffColors)ix);
+                empty &= (highlighted1.isEmpty() && highlighted2.isEmpty());
+            }
+
+            if (empty)
+            {
+                QPainterPath highlighted;
                 QFont font("Helvetica", 14);
                 font.setOverline(true);
                 font.setUnderline(true);
-                highlighted1.addText(DPI / 4, DPI / 4, font,
+                highlighted.addText(DPI / 4, DPI / 4, font,
                     tr("DiffPDF: False Positive"));
-                paintOnImage(highlighted1, &image1);
+                paintOnImage(highlighted, &image1, AppColor);
             }
+
             pixmap1 = QPixmap::fromImage(image1);
             pixmap2 = QPixmap::fromImage(image2);
-        } else {
+        }
+        else
+        {
             pixmap1 = QPixmap::fromImage(image1);
             QImage composed(image1.size(), image1.format());
             QPainter painter(&composed);
@@ -934,8 +953,10 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
             painter.end();
             pixmap2 = QPixmap::fromImage(composed);
         }
+
         QPixmapCache::insert(key1, pixmap1);
         QPixmapCache::insert(key2, pixmap2);
+
         QApplication::restoreOverrideCursor();
     }
     return qMakePair(pixmap1, pixmap2);
@@ -944,7 +965,7 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
 
 void MainWindow::computeTextHighlights(QPainterPath *highlighted1,
         QPainterPath *highlighted2, const PdfPage &page1,
-        const PdfPage &page2, const int DPI)
+        const PdfPage &page2, const int DPI, int iDiffType)
 {
     const bool ComparingWords = compareComboBox->currentIndex() ==
                                 CompareWords;
@@ -979,7 +1000,7 @@ void MainWindow::computeTextHighlights(QPainterPath *highlighted1,
         items2.debug(2, ToleranceY, ComparingWords, Yx);
     }
 
-    SequenceMatcher matcher(items1.texts(), items2.texts());
+    SequenceMatcher matcher(items1.texts(), items2.texts(), iDiffType);
     RangesPair rangesPair = computeRanges(&matcher);
     rangesPair = invertRanges(rangesPair.first, items1.count(),
                               rangesPair.second, items2.count());
@@ -1062,11 +1083,11 @@ QRect MainWindow::pixelRectForMargins(const QSize &size)
 }
 
 
-void MainWindow::paintOnImage(const QPainterPath &path, QImage *image)
+void MainWindow::paintOnImage(const QPainterPath &path, QImage *image, DiffColors eDiffColor)
 {
-    QPen pen_(pen);
-    QBrush brush_(brush);
-    QColor color = pen.color();
+    QPen pen_(pens[eDiffColor]);
+    QBrush brush_(brushes[eDiffColor]);
+    QColor color = pens[eDiffColor].color();
     QSettings settings;
     const qreal Alpha = settings.value("Opacity", 13).toInt() / 100.0;
     color.setAlphaF(Alpha);
@@ -1086,7 +1107,7 @@ void MainWindow::paintOnImage(const QPainterPath &path, QImage *image)
         rect.setWidth(SQUARE_SIZE);
         painter.drawRect(rect);
         if (!qFuzzyCompare(RULE_WIDTH, 0.0)) {
-            painter.setPen(QPen(pen.color()));
+            painter.setPen(QPen(pens[eDiffColor].color()));
             painter.drawRect(0, rect.y(), RULE_WIDTH, rect.height());
         }
     }
@@ -1095,7 +1116,7 @@ void MainWindow::paintOnImage(const QPainterPath &path, QImage *image)
         path_.setFillRule(Qt::WindingFill);
         painter.drawPath(path_);
         if (!qFuzzyCompare(RULE_WIDTH, 0.0)) {
-            painter.setPen(QPen(pen.color()));
+            painter.setPen(QPen(pens[eDiffColor].color()));
             QList<QPolygonF> polygons = path_.toFillPolygons();
             foreach (const QPolygonF &polygon, polygons) {
                 const QRectF rect = polygon.boundingRect();
@@ -1129,8 +1150,14 @@ void MainWindow::closeEvent(QCloseEvent*)
     settings.setValue("Columns", columnsSpinBox->value());
     settings.setValue("Tolerance/R", toleranceRSpinBox->value());
     settings.setValue("Tolerance/Y", toleranceYSpinBox->value());
-    settings.setValue("Outline", pen);
-    settings.setValue("Fill", brush);
+    settings.setValue(PenSettings[AppColor], pens[AppColor]);
+    settings.setValue(BrushSettings[AppColor], brushes[AppColor]);
+    settings.setValue(PenSettings[InsColor], pens[InsColor]);
+    settings.setValue(BrushSettings[InsColor], brushes[InsColor]);
+    settings.setValue(PenSettings[DelColor], pens[DelColor]);
+    settings.setValue(BrushSettings[DelColor], brushes[DelColor]);
+    settings.setValue(PenSettings[RepColor], pens[RepColor]);
+    settings.setValue(BrushSettings[RepColor], brushes[RepColor]);
     settings.setValue("InitialComparisonMode",
                       compareComboBox->currentIndex());
     settings.setValue("Margins/Exclude", marginsGroupBox->isChecked());
@@ -1561,7 +1588,7 @@ void MainWindow::options()
     int cacheSize = QPixmapCache::cacheLimit() / 1000;
     int alpha = settings.value("Opacity", 13).toInt();
     int squareSize = settings.value("SquareSize", 10).toInt();
-    OptionsForm form(&pen, &brush, &ruleWidth, &showToolTips,
+    OptionsForm form(pens, brushes, &ruleWidth, &showToolTips,
             &combineTextHighlighting, &cacheSize, &alpha, &squareSize,
             this);
     if (form.exec()) {

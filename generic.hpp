@@ -43,6 +43,15 @@ const int POINTS_PER_INCH = 72;
 typedef QSet<int> Ranges;
 typedef QPair<Ranges, Ranges> RangesPair;
 
+enum DiffColors
+{
+    AppColor,  // collor of visual appearance differences
+    InsColor,  // insertions color
+    DelColor,  // deletions
+    RepColor,  // replaces
+    NumOfDiffColors
+};
+
 struct PagePair
 {
     PagePair(int l=-1, int r=-1, bool v=false)

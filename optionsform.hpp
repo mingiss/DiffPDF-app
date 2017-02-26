@@ -16,6 +16,8 @@
 #include <QDialog>
 #include <QPen>
 
+#include "generic.hpp"
+
 class QCheckBox;
 class QComboBox;
 class QDialogButtonBox;
@@ -29,13 +31,18 @@ class OptionsForm : public QDialog
     Q_OBJECT
 
 public:
-    OptionsForm(QPen *pen, QBrush *brush, qreal *ruleWidth,
+    OptionsForm(QPen *pens, QBrush *brushes, qreal *ruleWidth,
             bool *showToolTips, bool *combineTextHighlighting,
             int *cacheSize, int *alpha, int *squareSize,
             QWidget *parent=0);
 
 private slots:
-    void updateColor(int index);
+    void updateColor(int index, DiffColors eDiffColor);
+    void updateAppColor(int index);
+    void updateInsColor(int index);
+    void updateDelColor(int index);
+    void updateRepColor(int index);
+
     void updateBrushStyle(int index);
     void updatePenStyle(int index);
     void updateSwatches();
@@ -48,7 +55,10 @@ private:
     void createConnections();
 
     QTabWidget *tabWidget;
-    QComboBox *colorComboBox;
+    QComboBox *colorComboBoxes[NumOfDiffColors];
+    QComboBox *inscolComboBox;
+    QComboBox *delcolComboBox;
+    QComboBox *repcolComboBox;
     QComboBox *brushStyleComboBox;
     QComboBox *penStyleComboBox;
     QSpinBox *alphaSpinBox;
@@ -59,16 +69,16 @@ private:
     QSpinBox *cacheSizeSpinBox;
     QDialogButtonBox *buttonBox;
 
-    QPen *m_pen;
-    QBrush *m_brush;
+    QPen *m_pens;
+    QBrush *m_brushes;
     qreal *m_ruleWidth;
     bool *m_showToolTips;
     bool *m_combineTextHighlighting;
     int *m_cacheSize;
     int *m_alpha;
     int *m_squareSize;
-    QPen pen;
-    QBrush brush;
+    QPen pens[NumOfDiffColors];
+    QBrush brushes[NumOfDiffColors];
 };
 
 #endif // OPTIONSFORM_HPP

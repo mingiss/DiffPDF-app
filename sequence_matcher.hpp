@@ -19,10 +19,10 @@
 #include <QStringList>
 
 // values for m_iDiffType
-#define SM_DIFF_DELETE  0x01
-#define SM_DIFF_REPLACE 0x02
-#define SM_DIFF_INSERT  0x04
-#define SM_DIFF_ALL     (SM_DIFF_DELETE | SM_DIFF_REPLACE | SM_DIFF_INSERT)
+#define SM_DIFF_INSERT  0x01
+#define SM_DIFF_DELETE  0x02
+#define SM_DIFF_REPLACE 0x04
+#define SM_DIFF_ALL     (SM_DIFF_INSERT | SM_DIFF_DELETE | SM_DIFF_REPLACE)
 
 typedef QStringList Sequence;
 typedef QString Element;
