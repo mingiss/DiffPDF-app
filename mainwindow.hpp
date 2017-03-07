@@ -101,14 +101,14 @@ private:
     PdfDocument getPdf(const QString &filename);
     QList<int> getPageList(int which, PdfDocument pdf);
     Difference getTheDifference(PdfPage page1, PdfPage page2);
-    void paintOnImage(const QPainterPath &path, QImage *image, DiffColors eDiffColor);
+    void paintOnImage(const QPainterPath &path, QImage *image, DiffTypes eDiffType);
     const QPair<QPixmap, QPixmap> populatePixmaps(const PdfDocument &pdf1,
             const PdfPage &page1, const PdfDocument &pdf2,
             const PdfPage &page2, bool hasVisualDifference,
             const QString &key1, const QString &key2);
     void computeTextHighlights(QPainterPath *highlighted1,
             QPainterPath *highlighted2, const PdfPage &page1,
-            const PdfPage &page2, const int DPI, int iDiffType);
+            const PdfPage &page2, const int DPI, int iDiffTypeMask);
     void computeVisualHighlights(QPainterPath *highlighted1,
         QPainterPath *highlighted2, const QImage &plainImage1,
         const QImage &plainImage2);
@@ -194,8 +194,8 @@ private:
     QBoxLayout *marginsLayout;
     QDockWidget *marginsDockWidget;
 
-    QBrush brushes[NumOfDiffColors];
-    QPen pens[NumOfDiffColors];
+    QBrush brushes[NumOfDiffTypes];
+    QPen pens[NumOfDiffTypes];
     QString currentPath;
     Qt::DockWidgetArea controlDockArea;
     Qt::DockWidgetArea actionDockArea;
@@ -211,10 +211,13 @@ private:
     const QString language;
     Debug debug;
 
-    static const QColor InitialColors[NumOfDiffColors];
-    static const char* PenSettings[NumOfDiffColors];
-    static const char* BrushSettings[NumOfDiffColors];
-    static const int DiffTypes[NumOfDiffColors];
+    PdfDocument m_pEmptyDoc;
+
+    static const QColor m_InitialColors[NumOfDiffTypes];
+    static const char* m_apszPenSettings[NumOfDiffTypes];
+    static const char* m_apszBrushSettings[NumOfDiffTypes];
+    static const int m_aiDiffTypeMasks[NumOfDiffTypes];
+    static const char m_acEmptyConts[];
 };
 
 #endif // MAINWINDOW_HPP

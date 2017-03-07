@@ -45,10 +45,12 @@
 #include <QSpinBox>
 #include <QSplitter>
 
-const QColor MainWindow::InitialColors[NumOfDiffColors] = {Qt::red, Qt::green, Qt::blue, Qt::magenta};
-const char* MainWindow::PenSettings[NumOfDiffColors] = {"Outline", "InsOutline", "DelOutline", "RepOutline"};
-const char* MainWindow::BrushSettings[NumOfDiffColors] = {"Fill", "InsFill", "DelFill", "RepFill"};
-const int MainWindow::DiffTypes[NumOfDiffColors] = {0, SM_DIFF_INSERT, SM_DIFF_DELETE, SM_DIFF_REPLACE };
+const QColor MainWindow::m_InitialColors[NumOfDiffTypes] = {Qt::red, Qt::green, Qt::blue, Qt::magenta};
+const char* MainWindow::m_apszPenSettings[NumOfDiffTypes] = {"Outline", "InsOutline", "DelOutline", "RepOutline"};
+const char* MainWindow::m_apszBrushSettings[NumOfDiffTypes] = {"Fill", "InsFill", "DelFill", "RepFill"};
+const int MainWindow::m_aiDiffTypeMasks[NumOfDiffTypes] = {0, DIFF_TYPE_INSERT, DIFF_TYPE_DELETE, DIFF_TYPE_REPLACE };
+
+#include "emptyconts.cpp"
 
 MainWindow::MainWindow(const Debug debug,
         const InitialComparisonMode comparisonMode,
@@ -61,18 +63,19 @@ MainWindow::MainWindow(const Debug debug,
       zoningDockArea(Qt::RightDockWidgetArea),
       logDockArea(Qt::RightDockWidgetArea), cancel(false),
       saveAll(true), savePages(SaveBothPages), language(language),
-      debug(debug)
+      debug(debug),
+      m_pEmptyDoc(NULL)
 {
     currentPath = QDir::homePath();
     QSettings settings;
-    for (int ix(0); ix < NumOfDiffColors; ix++)
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
     {
         pens[ix].setStyle(Qt::NoPen);
-        pens[ix].setColor(InitialColors[ix]);
-        pens[ix] = settings.value(PenSettings[ix], pens[ix]).value<QPen>();
+        pens[ix].setColor(m_InitialColors[ix]);
+        pens[ix] = settings.value(m_apszPenSettings[ix], pens[ix]).value<QPen>();
         brushes[ix].setColor(pens[ix].color());
         brushes[ix].setStyle(Qt::SolidPattern);
-        brushes[ix] = settings.value(BrushSettings[ix], brushes[ix]).value<QBrush>();
+        brushes[ix] = settings.value(m_apszBrushSettings[ix], brushes[ix]).value<QBrush>();
     }
     showToolTips = settings.value("ShowToolTips", true).toBool();
     combineTextHighlighting = settings.value("CombineTextHighlighting",
@@ -111,6 +114,17 @@ MainWindow::MainWindow(const Debug debug,
     QMetaObject::invokeMethod(this, "initialize", Qt::QueuedConnection,
             Q_ARG(QString, filename1),
             Q_ARG(QString, filename2));
+
+    QByteArray* pemptydoc = new QByteArray(m_acEmptyConts, sizeof(m_acEmptyConts));
+    if (!pemptydoc)
+        writeError(tr("Failed to load contents of empty document."));
+    else
+    {
+        m_pEmptyDoc = PdfDocument(Poppler::Document::loadFromData(*pemptydoc));
+        if (!m_pEmptyDoc)
+            writeError(tr("Failed to load empty document."));
+        delete pemptydoc;
+    }
 }
 
 
@@ -809,7 +823,11 @@ void MainWindow::updateViews(int index)
     PdfDocument pdf1 = getPdf(filename1);
     if (!pdf1)
         return;
-    PdfPage page1(pdf1->page(pair.left));
+
+    if (!m_pEmptyDoc)
+        return;
+
+    PdfPage page1((pair.left >= 0)? pdf1->page(pair.left) : m_pEmptyDoc->page(0));
     if (!page1)
         return;
 
@@ -817,7 +835,7 @@ void MainWindow::updateViews(int index)
     PdfDocument pdf2 = getPdf(filename2);
     if (!pdf2)
         return;
-    PdfPage page2(pdf2->page(pair.right));
+    PdfPage page2((pair.right >= 0)? pdf2->page(pair.right) : m_pEmptyDoc->page(0));
     if (!page2)
         return;
 
@@ -890,6 +908,8 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
             plainImage1 = page1->renderToImage(DPI, DPI);
             plainImage2 = page2->renderToImage(DPI, DPI);
         }
+//        m_pEmptyDoc->setRenderHint(Poppler::Document::Antialiasing);
+//        m_pEmptyDoc->setRenderHint(Poppler::Document::TextAntialiasing);
         pdf1->setRenderHint(Poppler::Document::Antialiasing);
         pdf1->setRenderHint(Poppler::Document::TextAntialiasing);
         pdf2->setRenderHint(Poppler::Document::Antialiasing);
@@ -901,20 +921,20 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
             showComboBox->currentIndex() == 0)
         {
             bool empty(true);
-            for (int ix(0); ix < NumOfDiffColors; ix++)
+            for (int ix(0); ix < NumOfDiffTypes; ix++)
             {
                 QPainterPath highlighted1;
                 QPainterPath highlighted2;
-                if ((ix == AppColor) && (hasVisualDifference || !compareText))
+                if ((ix == AppDiff) && (hasVisualDifference || !compareText))
                     computeVisualHighlights(&highlighted1, &highlighted2,
                         plainImage1, plainImage2);
                 else
                     computeTextHighlights(&highlighted1, &highlighted2, page1,
-                        page2, DPI, DiffTypes[ix]);
+                        page2, DPI, m_aiDiffTypeMasks[ix]);
                 if (!highlighted1.isEmpty())
-                    paintOnImage(highlighted1, &image1, (DiffColors)ix);
+                    paintOnImage(highlighted1, &image1, (DiffTypes)ix);
                 if (!highlighted2.isEmpty())
-                    paintOnImage(highlighted2, &image2, (DiffColors)ix);
+                    paintOnImage(highlighted2, &image2, (DiffTypes)ix);
                 empty &= (highlighted1.isEmpty() && highlighted2.isEmpty());
             }
 
@@ -926,7 +946,7 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
                 font.setUnderline(true);
                 highlighted.addText(DPI / 4, DPI / 4, font,
                     tr("DiffPDF: False Positive"));
-                paintOnImage(highlighted, &image1, AppColor);
+                paintOnImage(highlighted, &image1, AppDiff);
             }
 
             pixmap1 = QPixmap::fromImage(image1);
@@ -965,7 +985,7 @@ const QPair<QPixmap, QPixmap> MainWindow::populatePixmaps(
 
 void MainWindow::computeTextHighlights(QPainterPath *highlighted1,
         QPainterPath *highlighted2, const PdfPage &page1,
-        const PdfPage &page2, const int DPI, int iDiffType)
+        const PdfPage &page2, const int DPI, int iDiffTypeMask)
 {
     const bool ComparingWords = compareComboBox->currentIndex() ==
                                 CompareWords;
@@ -1000,7 +1020,7 @@ void MainWindow::computeTextHighlights(QPainterPath *highlighted1,
         items2.debug(2, ToleranceY, ComparingWords, Yx);
     }
 
-    SequenceMatcher matcher(items1.texts(), items2.texts(), iDiffType);
+    SequenceMatcher matcher(items1.texts(), items2.texts(), iDiffTypeMask);
     RangesPair rangesPair = computeRanges(&matcher);
     rangesPair = invertRanges(rangesPair.first, items1.count(),
                               rangesPair.second, items2.count());
@@ -1083,11 +1103,11 @@ QRect MainWindow::pixelRectForMargins(const QSize &size)
 }
 
 
-void MainWindow::paintOnImage(const QPainterPath &path, QImage *image, DiffColors eDiffColor)
+void MainWindow::paintOnImage(const QPainterPath &path, QImage *image, DiffTypes eDiffType)
 {
-    QPen pen_(pens[eDiffColor]);
-    QBrush brush_(brushes[eDiffColor]);
-    QColor color = pens[eDiffColor].color();
+    QPen pen_(pens[eDiffType]);
+    QBrush brush_(brushes[eDiffType]);
+    QColor color = pens[eDiffType].color();
     QSettings settings;
     const qreal Alpha = settings.value("Opacity", 13).toInt() / 100.0;
     color.setAlphaF(Alpha);
@@ -1107,7 +1127,7 @@ void MainWindow::paintOnImage(const QPainterPath &path, QImage *image, DiffColor
         rect.setWidth(SQUARE_SIZE);
         painter.drawRect(rect);
         if (!qFuzzyCompare(RULE_WIDTH, 0.0)) {
-            painter.setPen(QPen(pens[eDiffColor].color()));
+            painter.setPen(QPen(pens[eDiffType].color()));
             painter.drawRect(0, rect.y(), RULE_WIDTH, rect.height());
         }
     }
@@ -1116,7 +1136,7 @@ void MainWindow::paintOnImage(const QPainterPath &path, QImage *image, DiffColor
         path_.setFillRule(Qt::WindingFill);
         painter.drawPath(path_);
         if (!qFuzzyCompare(RULE_WIDTH, 0.0)) {
-            painter.setPen(QPen(pens[eDiffColor].color()));
+            painter.setPen(QPen(pens[eDiffType].color()));
             QList<QPolygonF> polygons = path_.toFillPolygons();
             foreach (const QPolygonF &polygon, polygons) {
                 const QRectF rect = polygon.boundingRect();
@@ -1150,14 +1170,14 @@ void MainWindow::closeEvent(QCloseEvent*)
     settings.setValue("Columns", columnsSpinBox->value());
     settings.setValue("Tolerance/R", toleranceRSpinBox->value());
     settings.setValue("Tolerance/Y", toleranceYSpinBox->value());
-    settings.setValue(PenSettings[AppColor], pens[AppColor]);
-    settings.setValue(BrushSettings[AppColor], brushes[AppColor]);
-    settings.setValue(PenSettings[InsColor], pens[InsColor]);
-    settings.setValue(BrushSettings[InsColor], brushes[InsColor]);
-    settings.setValue(PenSettings[DelColor], pens[DelColor]);
-    settings.setValue(BrushSettings[DelColor], brushes[DelColor]);
-    settings.setValue(PenSettings[RepColor], pens[RepColor]);
-    settings.setValue(BrushSettings[RepColor], brushes[RepColor]);
+    settings.setValue(m_apszPenSettings[AppDiff], pens[AppDiff]);
+    settings.setValue(m_apszBrushSettings[AppDiff], brushes[AppDiff]);
+    settings.setValue(m_apszPenSettings[InsDiff], pens[InsDiff]);
+    settings.setValue(m_apszBrushSettings[InsDiff], brushes[InsDiff]);
+    settings.setValue(m_apszPenSettings[DelDiff], pens[DelDiff]);
+    settings.setValue(m_apszBrushSettings[DelDiff], brushes[DelDiff]);
+    settings.setValue(m_apszPenSettings[RepDiff], pens[RepDiff]);
+    settings.setValue(m_apszBrushSettings[RepDiff], brushes[RepDiff]);
     settings.setValue("InitialComparisonMode",
                       compareComboBox->currentIndex());
     settings.setValue("Margins/Exclude", marginsGroupBox->isChecked());
@@ -1351,12 +1371,12 @@ QList<int> MainWindow::getPageList(int which, PdfDocument pdf)
         int hyphen = page.indexOf("-");
         if (hyphen > -1) {
             int p1 = page.left(hyphen).toInt(&ok);
-            if (!ok || p1 < 1) {
+            if (!ok || p1 < 0) {
                 error = true;
                 break;
             }
             int p2 = page.mid(hyphen + 1).toInt(&ok);
-            if (!ok || p2 < 1 || p2 < p1) {
+            if (!ok || p2 < 0 || p2 < p1) {
                 error = true;
                 break;
             }
@@ -1372,7 +1392,7 @@ QList<int> MainWindow::getPageList(int which, PdfDocument pdf)
         }
         else {
             int p = page.toInt(&ok);
-            if (ok && p > 0 && p <= pdf->numPages())
+            if (ok && p >= 0 && p <= pdf->numPages())
                 pages.append(p - 1);
             else {
                 error = true;
@@ -1442,16 +1462,20 @@ const QPair<int, int> MainWindow::comparePages(const QString &filename1,
     int total = qMin(pages1.count(), pages2.count());
     int number = 0;
     int index = 0;
+
+    if (!m_pEmptyDoc)
+        return qMakePair(number, total);
+
     while (!pages1.isEmpty() && !pages2.isEmpty()) {
         int p1 = pages1.takeFirst();
-        PdfPage page1(pdf1->page(p1));
+        PdfPage page1((p1 >= 0)? pdf1->page(p1) : m_pEmptyDoc->page(0));
         if (!page1) {
             writeError(tr("Failed to read page %1 from '%2'.")
                           .arg(p1 + 1).arg(filename1));
             continue;
         }
         int p2 = pages2.takeFirst();
-        PdfPage page2(pdf2->page(p2));
+        PdfPage page2((p2 >= 0)? pdf2->page(p2) : m_pEmptyDoc->page(0));
         if (!page2) {
             writeError(tr("Failed to read page %1 from '%2'.")
                           .arg(p2 + 1).arg(filename2));

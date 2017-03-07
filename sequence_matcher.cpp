@@ -60,8 +60,8 @@ struct Offsets
 };
 
 
-SequenceMatcher::SequenceMatcher(const Sequence &a_, const Sequence &b_, int iDiffType)
-    : a(a_), b(b_), m_iDiffType(iDiffType)
+SequenceMatcher::SequenceMatcher(const Sequence &a_, const Sequence &b_, int iDiffTypeMask)
+    : a(a_), b(b_), m_iDiffTypeMask(iDiffTypeMask)
 {
     set_sequences(a, b);
 }
@@ -185,9 +185,9 @@ QList<Match> SequenceMatcher::get_matching_blocks()
         {
             bool insertion = (prev_match.i + prev_match.size_i == match.i);
             bool deletion = (prev_match.j + prev_match.size_j == match.j);
-            if ((((m_iDiffType & SM_DIFF_DELETE) == 0) && deletion) ||
-                (((m_iDiffType & SM_DIFF_INSERT) == 0) && insertion) ||
-                (((m_iDiffType & SM_DIFF_REPLACE) == 0) && (!deletion) && (!insertion)))
+            if ((((m_iDiffTypeMask & DIFF_TYPE_DELETE) == 0) && deletion) ||
+                (((m_iDiffTypeMask & DIFF_TYPE_INSERT) == 0) && insertion) ||
+                (((m_iDiffTypeMask & DIFF_TYPE_REPLACE) == 0) && (!deletion) && (!insertion)))
             {
                 prev_match.size_i = match.i - prev_match.i + match.size_i;
                 prev_match.size_j = match.j - prev_match.j + match.size_j;

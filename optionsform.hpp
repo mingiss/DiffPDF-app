@@ -37,7 +37,7 @@ public:
             QWidget *parent=0);
 
 private slots:
-    void updateColor(int index, DiffColors eDiffColor);
+    void updateColor(int index, DiffTypes eDiffType);
     void updateAppColor(int index);
     void updateInsColor(int index);
     void updateDelColor(int index);
@@ -55,7 +55,7 @@ private:
     void createConnections();
 
     QTabWidget *tabWidget;
-    QComboBox *colorComboBoxes[NumOfDiffColors];
+    QComboBox *colorComboBoxes[NumOfDiffTypes];
     QComboBox *inscolComboBox;
     QComboBox *delcolComboBox;
     QComboBox *repcolComboBox;
@@ -77,8 +77,8 @@ private:
     int *m_cacheSize;
     int *m_alpha;
     int *m_squareSize;
-    QPen pens[NumOfDiffColors];
-    QBrush brushes[NumOfDiffColors];
+    QPen pens[NumOfDiffTypes];
+    QBrush brushes[NumOfDiffTypes];
 };
 
 #endif // OPTIONSFORM_HPP

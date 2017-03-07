@@ -33,7 +33,7 @@ OptionsForm::OptionsForm(QPen *pens, QBrush *brushes, qreal *ruleWidth,
       m_combineTextHighlighting(combineTextHighlighting),
       m_cacheSize(cacheSize), m_alpha(alpha), m_squareSize(squareSize)
 {
-    for (int ix(0); ix < NumOfDiffColors; ix++)
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
     {
         this->pens[ix] = m_pens[ix];
         this->brushes[ix] = m_brushes[ix];
@@ -51,7 +51,7 @@ OptionsForm::OptionsForm(QPen *pens, QBrush *brushes, qreal *ruleWidth,
 
 void OptionsForm::createWidgets()
 {
-    for (int ix(0); ix < NumOfDiffColors; ix++)
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
     {
         colorComboBoxes[ix] = new QComboBox;
         foreach (const QString &name, QColor::colorNames()) {
@@ -61,7 +61,7 @@ void OptionsForm::createWidgets()
         colorComboBoxes[ix]->setCurrentIndex(colorComboBoxes[ix]->findData(pens[ix].color()));
     }
 
-    QColor color = pens[AppColor].color();
+    QColor color = pens[AppDiff].color();
     color.setAlphaF(*m_alpha / 100.0);
 
     brushStyleComboBox = new QComboBox;
@@ -84,7 +84,7 @@ void OptionsForm::createWidgets()
         brushStyleComboBox->addItem(brushSwatch(pair.second, color),
                                                 pair.first, pair.second);
     brushStyleComboBox->setCurrentIndex(brushStyleComboBox->findData(
-                brushes[AppColor].style()));
+                brushes[AppDiff].style()));
 
     penStyleComboBox = new QComboBox;
     typedef QPair<QString, Qt::PenStyle> PenPair;
@@ -98,7 +98,7 @@ void OptionsForm::createWidgets()
         penStyleComboBox->addItem(penStyleSwatch(pair.second, color),
                                   pair.first, pair.second);
     penStyleComboBox->setCurrentIndex(penStyleComboBox->findData(
-                pens[AppColor].style()));
+                pens[AppDiff].style()));
 
     alphaSpinBox = new QSpinBox;
     alphaSpinBox->setRange(1, 100);
@@ -160,11 +160,11 @@ void OptionsForm::createLayout()
     tabWidget->addTab(widget, tr("&General"));
 
     QFormLayout *highlightingLayout = new QFormLayout;
-    highlightingLayout->addRow(tr("&Base Color:"), colorComboBoxes[AppColor]);
+    highlightingLayout->addRow(tr("&Base Color:"), colorComboBoxes[AppDiff]);
 //  highlightingLayout->addRow(tr("Color for:"));
-    highlightingLayout->addRow(tr("     &insertions:"), colorComboBoxes[InsColor]);
-    highlightingLayout->addRow(tr("     &deletions:"), colorComboBoxes[DelColor]);
-    highlightingLayout->addRow(tr("     &replaces:"), colorComboBoxes[RepColor]);
+    highlightingLayout->addRow(tr("     &insertions:"), colorComboBoxes[InsDiff]);
+    highlightingLayout->addRow(tr("     &deletions:"), colorComboBoxes[DelDiff]);
+    highlightingLayout->addRow(tr("     &replaces:"), colorComboBoxes[RepDiff]);
     highlightingLayout->addRow(tr("O&utline:"), penStyleComboBox);
     highlightingLayout->addRow(tr("&Fill:"), brushStyleComboBox);
     highlightingLayout->addRow(tr("F&ill Opacity:"), alphaSpinBox);
@@ -196,13 +196,13 @@ void OptionsForm::createLayout()
 
 void OptionsForm::createConnections()
 {
-    connect(colorComboBoxes[AppColor], SIGNAL(currentIndexChanged(int)),
+    connect(colorComboBoxes[AppDiff], SIGNAL(currentIndexChanged(int)),
             this, SLOT(updateAppColor(int)));
-    connect(colorComboBoxes[InsColor], SIGNAL(currentIndexChanged(int)),
+    connect(colorComboBoxes[InsDiff], SIGNAL(currentIndexChanged(int)),
             this, SLOT(updateInsColor(int)));
-    connect(colorComboBoxes[DelColor], SIGNAL(currentIndexChanged(int)),
+    connect(colorComboBoxes[DelDiff], SIGNAL(currentIndexChanged(int)),
             this, SLOT(updateDelColor(int)));
-    connect(colorComboBoxes[RepColor], SIGNAL(currentIndexChanged(int)),
+    connect(colorComboBoxes[RepDiff], SIGNAL(currentIndexChanged(int)),
             this, SLOT(updateRepColor(int)));
     connect(penStyleComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(updatePenStyle(int)));
@@ -219,37 +219,37 @@ void OptionsForm::createConnections()
 }
 
 
-void OptionsForm::updateColor(int index, DiffColors eDiffColor)
+void OptionsForm::updateColor(int index, DiffTypes eDiffType)
 {
-    QColor color = colorComboBoxes[eDiffColor]->itemData(index).value<QColor>();
-    brushes[eDiffColor].setColor(color);
-    pens[eDiffColor].setColor(color);
+    QColor color = colorComboBoxes[eDiffType]->itemData(index).value<QColor>();
+    brushes[eDiffType].setColor(color);
+    pens[eDiffType].setColor(color);
 }
 
 void OptionsForm::updateAppColor(int index)
 {
-    updateColor(index, AppColor);
+    updateColor(index, AppDiff);
     updateSwatches();
 }
 
 void OptionsForm::updateInsColor(int index)
 {
-    updateColor(index, InsColor);
+    updateColor(index, InsDiff);
 }
 
 void OptionsForm::updateDelColor(int index)
 {
-    updateColor(index, DelColor);
+    updateColor(index, DelDiff);
 }
 
 void OptionsForm::updateRepColor(int index)
 {
-    updateColor(index, RepColor);
+    updateColor(index, RepDiff);
 }
 
 void OptionsForm::updatePenStyle(int index)
 {
-    for (int ix(0); ix < NumOfDiffColors; ix++)
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
         pens[ix].setStyle(static_cast<Qt::PenStyle>(
                  penStyleComboBox->itemData(index).toInt()));
 }
@@ -257,7 +257,7 @@ void OptionsForm::updatePenStyle(int index)
 
 void OptionsForm::updateBrushStyle(int index)
 {
-    for (int ix(0); ix < NumOfDiffColors; ix++)
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
         brushes[ix].setStyle(static_cast<Qt::BrushStyle>(
                    brushStyleComboBox->itemData(index).toInt()));
 }
@@ -265,8 +265,8 @@ void OptionsForm::updateBrushStyle(int index)
 
 void OptionsForm::updateSwatches()
 {
-    QColor color = colorComboBoxes[AppColor]->itemData(
-            colorComboBoxes[AppColor]->currentIndex()).value<QColor>();
+    QColor color = colorComboBoxes[AppDiff]->itemData(
+            colorComboBoxes[AppDiff]->currentIndex()).value<QColor>();
     color.setAlphaF(alphaSpinBox->value() / 100.0);
     for (int i = 0; i < brushStyleComboBox->count(); ++i)
         brushStyleComboBox->setItemIcon(i, brushSwatch(
@@ -294,7 +294,7 @@ void OptionsForm::updateUi()
 
 void OptionsForm::accept()
 {
-    for (int ix(0); ix < NumOfDiffColors; ix++)
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
     {
         m_pens[ix] = pens[ix];
         m_brushes[ix] = brushes[ix];

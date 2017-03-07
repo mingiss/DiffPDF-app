@@ -43,21 +43,27 @@ const int POINTS_PER_INCH = 72;
 typedef QSet<int> Ranges;
 typedef QPair<Ranges, Ranges> RangesPair;
 
-enum DiffColors
+enum DiffTypes
 {
-    AppColor,  // collor of visual appearance differences
-    InsColor,  // insertions color
-    DelColor,  // deletions
-    RepColor,  // replaces
-    NumOfDiffColors
+    AppDiff,        // visual appearance difference
+    InsDiff,        // insertion
+    DelDiff,        // deletion
+    RepDiff,        // replace
+    NumOfDiffTypes
 };
+
+// combining flags for SequenceMatcher::m_iDiffTypeMask
+#define DIFF_TYPE_INSERT  0x01
+#define DIFF_TYPE_DELETE  0x02
+#define DIFF_TYPE_REPLACE 0x04
+#define DIFF_TYPE_ALL     (DIFF_TYPE_INSERT | DIFF_TYPE_DELETE | DIFF_TYPE_REPLACE)
 
 struct PagePair
 {
-    PagePair(int l=-1, int r=-1, bool v=false)
+    PagePair(int l=-2, int r=-2, bool v=false) // -1 means empty page from now
         : left(l), right(r), hasVisualDifference(v) {}
 
-    bool isNull() { return left == -1 || right == -1; }
+    bool isNull() { return left == -2 || right == -2; }
 
     const int left;
     const int right;

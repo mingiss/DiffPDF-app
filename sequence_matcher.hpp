@@ -18,12 +18,6 @@
 #include <QString>
 #include <QStringList>
 
-// values for m_iDiffType
-#define SM_DIFF_INSERT  0x01
-#define SM_DIFF_DELETE  0x02
-#define SM_DIFF_REPLACE 0x04
-#define SM_DIFF_ALL     (SM_DIFF_INSERT | SM_DIFF_DELETE | SM_DIFF_REPLACE)
-
 typedef QStringList Sequence;
 typedef QString Element;
 
@@ -52,7 +46,7 @@ class SequenceMatcher
 public:
     SequenceMatcher(const Sequence &a_=Sequence(),
                     const Sequence &b_=Sequence(),
-                    int iDiffType = SM_DIFF_ALL);
+                    int iDiffTypeMask = DIFF_TYPE_ALL);
 
     void set_sequences(const Sequence &a, const Sequence &b)
         { set_sequence1(a); set_sequence2(b); }
@@ -71,8 +65,8 @@ private:
     QList<Match> matching_blocks;
 
     // which diference to take into account
-    // any combination of SM_DIFF_DELETE, SM_DIFF_REPLACE or SM_DIFF_INSERT
-    int m_iDiffType;
+    // any combination of DIFF_TYPE_DELETE, DIFF_TYPE_REPLACE or DIFF_TYPE_INSERT
+    int m_iDiffTypeMask;
 };
 
 #endif // SEQUENCE_MATCHER_HPP

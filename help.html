@@ -98,7 +98,11 @@ of a PDF file, one with pages 1-12 and the other with pages 1-13 because
 of an extra page having been added as page 4, they can be compared by
 specifying two page ranges, 1-12 for the first and 1-3, 5-13 for the
 second. This will make DiffPDF compare pages in the pairs (1, 1), (2,
-2), (3, 3), (4, 5), (5, 6), and so on, to (12, 13).
+2), (3, 3), (4, 5), (5, 6), and so on, to (12, 13). It is possible to add
+an empty page in place of the inserted page for not to loose it from the
+comparison chain. Empty page could be specified using page number 0.
+The latter example of page ranges then would read as 1-3, 0, 4-12 for the 
+original file and 1-13 for the file with inserted page 4.
 
 <h3 id="mar">Margins</h3>
 <p>It is possible to make <font color="darkgreen">DiffPDF</font> ignore
@@ -118,7 +122,7 @@ pages, right pages, or both pages.
 
 <h3 id="opt">The Options Dialog</h3>
 <p>This dialog is invoked by clicking the <b>Options</b> button. 
-The dialog supports changing the highlighting color, whether to use 
+The dialog supports changing the highlighting colors, whether to use 
 a pen or fill or both, and the fill's opacity. The Square Size is used 
 when doing Appearance mode comparisons: the smaller the size the more 
 fine-grained the highlighting is&mdash;and the slower to compute. 
