@@ -154,11 +154,13 @@ void MainWindow::createWidgets(const QString &filename1,
                 "such as 1-10, and multiple ranges can be used, e.g., "
                 "1-10, 12-15, 20, 22, 35-39. This makes it "
                 "straighforward to compare similar documents where one "
-                "has one or more additional pages.<p>For example, if "
+                "has one or more additional pages.</p><p>For example, if "
                 "file1.pdf has pages 1-30 and file2.pdf has pages 1-31 "
                 "with the extra page being page 14, the two page ranges "
                 "would be set to 1-30 for file1.pdf and 1-13, 15-31 for "
-                "file2.pdf."));
+                "file2.pdf.</p><p>Empty page could be specified using page "
+                "number 0. Page ranges of the latter example would read then "
+                "as 1-13, 0, 14-30 for file1.pdf and 1-31 for file1.pdf.</p>"));
     comparePages2Label = new QLabel(tr("&Pages:"));
     pages2LineEdit = new QLineEdit;
     comparePages2Label->setBuddy(pages2LineEdit);
@@ -1241,6 +1243,7 @@ void MainWindow::setFile1(QString filename)
         updateUi();
         int page_count = writeFileInfo(filename);
         pages1LineEdit->setText(tr("1-%1").arg(page_count));
+        SynchronizePageRanges();
         currentPath = QFileInfo(filename).canonicalPath();
         setFile2Button->setFocus();
         if (filename2LineEdit->text().isEmpty())
@@ -1275,6 +1278,7 @@ void MainWindow::setFile2(QString filename)
         updateUi();
         int page_count = writeFileInfo(filename);
         pages2LineEdit->setText(tr("1-%1").arg(page_count));
+        SynchronizePageRanges();
         currentPath = QFileInfo(filename).canonicalPath();
         compareButton->setFocus();
         if (filename1LineEdit->text().isEmpty())
@@ -1945,3 +1949,48 @@ void MainWindow::setAMargin(const QPoint &pos)
                         (size.height() - y)));
     }
 }
+
+void MainWindow::SynchronizePageRanges()
+{
+    QString filename1 = filename1LineEdit->text();
+    if (filename1.isEmpty())
+        return;
+    PdfDocument pdf1 = getPdf(filename1);
+    if (!pdf1)
+        return;
+    int page_count1 = pdf1->numPages();
+    QString pages_init1(tr("1-%1").arg(page_count1));
+
+    QString filename2 = filename2LineEdit->text();
+    if (filename2.isEmpty())
+        return;
+    PdfDocument pdf2 = getPdf(filename2);
+    if (!pdf2)
+        return;
+    int page_count2 = pdf2->numPages();
+    QString pages_init2(tr("1-%1").arg(page_count2));
+
+    if (page_count1 != page_count2)
+    {
+        QString pages1 = pages1LineEdit->text();
+        QString pages2 = pages2LineEdit->text();
+
+        if ((pages1.compare(pages_init1) == 0) && (pages2.compare(pages_init2) == 0))
+        {
+            if (page_count1 < page_count2)
+            {
+                for (int ii = page_count1; ii < page_count2; ii++)
+                    pages1.append(", 0");
+                pages1LineEdit->setText(pages1);
+            }
+            else
+            {
+                for (int ii = page_count2; ii < page_count1; ii++)
+                    pages2.append(", 0");
+                pages2LineEdit->setText(pages2);
+            }
+        }
+    }
+}
+
+

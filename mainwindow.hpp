@@ -134,6 +134,7 @@ private:
             int *width, int *height);
     QRectF pointRectForMargins(const QSize &size);
     QRect pixelRectForMargins(const QSize &size);
+    void SynchronizePageRanges();
 
     QPushButton *setFile1Button;
     LineEdit *filename1LineEdit;
