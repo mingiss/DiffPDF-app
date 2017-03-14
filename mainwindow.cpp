@@ -45,11 +45,8 @@
 #include <QSpinBox>
 #include <QSplitter>
 
-const QColor MainWindow::m_eInitialColors[NumOfDiffTypes] = { Qt::red, Qt::green, Qt::blue, Qt::magenta };
 const char* MainWindow::m_apszInitialColors[NumOfDiffTypes] = { "red", "green", "blue", "magenta" };
-const char* MainWindow::m_apszPenSettings[NumOfDiffTypes] = { "Outline", "InsOutline", "DelOutline", "RepOutline" };
-const char* MainWindow::m_apszBrushSettings[NumOfDiffTypes] = { "Fill", "InsFill", "DelFill", "RepFill" };
-const char* MainWindow::m_apszColorSettings[NumOfDiffTypes] = { "FillColor", "InsColor", "DelColor", "RepColor" };
+const char* MainWindow::m_apszColorSettings[NumOfDiffTypes] = { "BaseColor", "InsColor", "DelColor", "RepColor" };
 const int MainWindow::m_aiDiffTypeMasks[NumOfDiffTypes] = { 0, DIFF_TYPE_INSERT, DIFF_TYPE_DELETE, DIFF_TYPE_REPLACE };
 
 #include "emptyconts.cpp"
@@ -73,11 +70,11 @@ MainWindow::MainWindow(const Debug debug,
     for (int ix(0); ix < NumOfDiffTypes; ix++)
     {
         pens[ix].setStyle(Qt::NoPen);
-        pens[ix] = qPen(settings.value(m_apszPenSettings[ix], pens[ix]).value<QPen>());
+        pens[ix] = ((ix == AppDiff)? qPen(settings.value("Outline", pens[ix]).value<QPen>()) : pens[AppDiff]);
         pens[ix].setColor(settings.value(m_apszColorSettings[ix], m_apszInitialColors[ix]).value<QString>());
-        brushes[ix].setColor(pens[ix].color());
         brushes[ix].setStyle(Qt::SolidPattern);
-        brushes[ix] = settings.value(m_apszBrushSettings[ix], brushes[ix]).value<QBrush>();
+        brushes[ix] = ((ix == AppDiff)? settings.value("Fill", brushes[ix]).value<QBrush>() : brushes[AppDiff]);
+        brushes[ix].setColor(pens[ix].color());
     }
     showToolTips = settings.value("ShowToolTips", true).toBool();
     combineTextHighlighting = settings.value("CombineTextHighlighting",
@@ -1174,13 +1171,10 @@ void MainWindow::closeEvent(QCloseEvent*)
     settings.setValue("Columns", columnsSpinBox->value());
     settings.setValue("Tolerance/R", toleranceRSpinBox->value());
     settings.setValue("Tolerance/Y", toleranceYSpinBox->value());
-
+    settings.setValue("Outline", pens[AppDiff]);
+    settings.setValue("Fill", brushes[AppDiff]);
     for (int ix(0); ix < NumOfDiffTypes; ix++)
-    {
-        settings.setValue(m_apszPenSettings[ix], pens[ix]);
-        settings.setValue(m_apszBrushSettings[ix], brushes[ix]);
         settings.setValue(m_apszColorSettings[ix], pens[ix].m_sColorName);
-    }
 
     settings.setValue("InitialComparisonMode",
                       compareComboBox->currentIndex());

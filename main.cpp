@@ -40,9 +40,17 @@ int main(int argc, char *argv[])
             InitialComparisonMode>(settings.value("InitialComparisonMode",
                         CompareWords).toInt());
     const QString LanguageOption = "--language=";
+    const QString sbasecolor_option = "--basecolor=";
+    const QString sinscolor_option = "--inscolor=";
+    const QString sdelcolor_option = "--delcolor=";
+    const QString srepcolor_option = "--repcolor=";
     QString filename1;
     QString filename2;
     QString language = QLocale::system().name();
+    QString sbasecolor;
+    QString sinscolor;
+    QString sdelcolor;
+    QString srepcolor;
     bool optionsOK = true;
     Debug debug = DebugOff;
     foreach (const QString arg, args) {
@@ -54,6 +62,14 @@ int main(int argc, char *argv[])
             comparisonMode = CompareWords;
         else if (optionsOK && arg.startsWith(LanguageOption))
             language = arg.mid(LanguageOption.length());
+        else if (optionsOK && arg.startsWith(sbasecolor_option))
+            sbasecolor = arg.mid(sbasecolor_option.length());
+        else if (optionsOK && arg.startsWith(sinscolor_option))
+            sinscolor = arg.mid(sinscolor_option.length());
+        else if (optionsOK && arg.startsWith(sdelcolor_option))
+            sdelcolor = arg.mid(sdelcolor_option.length());
+        else if (optionsOK && arg.startsWith(srepcolor_option))
+            srepcolor = arg.mid(srepcolor_option.length());
         else if (optionsOK && (arg == "--help" || arg == "-h")) {
             out << "usage: diffpdf [options] [file1.pdf [file2.pdf]]\n\n"
                 "A GUI program that compares two PDF files and shows "
@@ -74,6 +90,11 @@ int main(int argc, char *argv[])
                 "translation language, e.g., en for English, cz for "
                 "Czech; English will be used if there is no translation "
                 "available\n"
+                "--basecolor=ccc    set color for appearance differences, "
+                "ccc -- one of symbolic SVG color keyword names\n"
+                "--inscolor=ccc     color for insertions\n"
+                "--delcolor=ccc     color for deletions\n"
+                "--repcolor=ccc     color for replaces\n"
                 "--debug=2          write the text fed to the sequence "
                 "matcher into temporary files (e.g., /tmp/page1.txt "
                 "etc.)\n"
@@ -100,6 +121,15 @@ int main(int argc, char *argv[])
         else
             out << "unrecognized argument '" << arg << "'\n";
     }
+
+    if (!sbasecolor.isEmpty())
+        settings.setValue(MainWindow::m_apszColorSettings[AppDiff], sbasecolor);
+    if (!sinscolor.isEmpty())
+        settings.setValue(MainWindow::m_apszColorSettings[InsDiff], sinscolor);
+    if (!sdelcolor.isEmpty())
+        settings.setValue(MainWindow::m_apszColorSettings[DelDiff], sdelcolor);
+    if (!srepcolor.isEmpty())
+        settings.setValue(MainWindow::m_apszColorSettings[RepDiff], srepcolor);
 
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + language,

@@ -1,11 +1,10 @@
 2.1.2
 
 - Different colors for insertions, deletions and replaces. Could be
-  configured in Options dialog.
+  configured in Options dialog or initialized through command line arguments.
 
 - Empty page in comparison page chains, specified through page number 0.
-
-- Page range synchronization by adding empty pages (page number 0) to the
+  Page range synchronization by adding empty pages (page number 0) to the
   end of the smaller file page range.
 
 2.1.1

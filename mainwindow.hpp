@@ -213,13 +213,11 @@ private:
 
     PdfDocument m_pEmptyDoc;
 
-    static const QColor m_eInitialColors[NumOfDiffTypes];
-    static const char* m_apszInitialColors[NumOfDiffTypes];
-    static const char* m_apszPenSettings[NumOfDiffTypes];
-    static const char* m_apszBrushSettings[NumOfDiffTypes];
-    static const char* m_apszColorSettings[NumOfDiffTypes];
     static const int m_aiDiffTypeMasks[NumOfDiffTypes];
     static const char m_acEmptyConts[];
+public:
+    static const char* m_apszInitialColors[NumOfDiffTypes];
+    static const char* m_apszColorSettings[NumOfDiffTypes];
 };
 
 #endif // MAINWINDOW_HPP
