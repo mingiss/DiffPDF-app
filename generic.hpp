@@ -17,6 +17,7 @@
 #include <QPair>
 #include <QPixmap>
 #include <QSet>
+#include <QPen>
 
 class QColor;
 class QMimeData;
@@ -57,6 +58,27 @@ enum DiffTypes
 #define DIFF_TYPE_DELETE  0x02
 #define DIFF_TYPE_REPLACE 0x04
 #define DIFF_TYPE_ALL     (DIFF_TYPE_INSERT | DIFF_TYPE_DELETE | DIFF_TYPE_REPLACE)
+
+// Qt derived classes preserving symbolic color name
+class qColor: public QColor
+{
+public:
+    QString m_sColorName;
+
+    qColor(const QString& name): QColor(name), m_sColorName(name) {}
+};
+class qPen: public QPen
+{
+public:
+    QString m_sColorName;
+
+    qPen(): QPen() {}
+    qPen(const qPen& pen): QPen(pen), m_sColorName(pen.m_sColorName) {}
+    qPen(const QPen& pen): QPen(pen), m_sColorName(pen.color().name()) {}
+    void setColor(const char* name) { qColor color(name); setColor(color); m_sColorName = name; }
+    void setColor(const QString& name) { qColor color(name); setColor(color); m_sColorName = name; }
+    void setColor(const qColor& color) { QPen::setColor(color); m_sColorName = color.m_sColorName; }
+};
 
 struct PagePair
 {

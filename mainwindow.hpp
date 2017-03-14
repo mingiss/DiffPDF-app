@@ -40,7 +40,6 @@ class QScrollArea;
 class QSpinBox;
 class QSplitter;
 
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -196,7 +195,7 @@ private:
     QDockWidget *marginsDockWidget;
 
     QBrush brushes[NumOfDiffTypes];
-    QPen pens[NumOfDiffTypes];
+    qPen pens[NumOfDiffTypes];
     QString currentPath;
     Qt::DockWidgetArea controlDockArea;
     Qt::DockWidgetArea actionDockArea;
@@ -214,9 +213,11 @@ private:
 
     PdfDocument m_pEmptyDoc;
 
-    static const QColor m_InitialColors[NumOfDiffTypes];
+    static const QColor m_eInitialColors[NumOfDiffTypes];
+    static const char* m_apszInitialColors[NumOfDiffTypes];
     static const char* m_apszPenSettings[NumOfDiffTypes];
     static const char* m_apszBrushSettings[NumOfDiffTypes];
+    static const char* m_apszColorSettings[NumOfDiffTypes];
     static const int m_aiDiffTypeMasks[NumOfDiffTypes];
     static const char m_acEmptyConts[];
 };

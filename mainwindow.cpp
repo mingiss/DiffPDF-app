@@ -45,10 +45,12 @@
 #include <QSpinBox>
 #include <QSplitter>
 
-const QColor MainWindow::m_InitialColors[NumOfDiffTypes] = {Qt::red, Qt::green, Qt::blue, Qt::magenta};
-const char* MainWindow::m_apszPenSettings[NumOfDiffTypes] = {"Outline", "InsOutline", "DelOutline", "RepOutline"};
-const char* MainWindow::m_apszBrushSettings[NumOfDiffTypes] = {"Fill", "InsFill", "DelFill", "RepFill"};
-const int MainWindow::m_aiDiffTypeMasks[NumOfDiffTypes] = {0, DIFF_TYPE_INSERT, DIFF_TYPE_DELETE, DIFF_TYPE_REPLACE };
+const QColor MainWindow::m_eInitialColors[NumOfDiffTypes] = { Qt::red, Qt::green, Qt::blue, Qt::magenta };
+const char* MainWindow::m_apszInitialColors[NumOfDiffTypes] = { "red", "green", "blue", "magenta" };
+const char* MainWindow::m_apszPenSettings[NumOfDiffTypes] = { "Outline", "InsOutline", "DelOutline", "RepOutline" };
+const char* MainWindow::m_apszBrushSettings[NumOfDiffTypes] = { "Fill", "InsFill", "DelFill", "RepFill" };
+const char* MainWindow::m_apszColorSettings[NumOfDiffTypes] = { "FillColor", "InsColor", "DelColor", "RepColor" };
+const int MainWindow::m_aiDiffTypeMasks[NumOfDiffTypes] = { 0, DIFF_TYPE_INSERT, DIFF_TYPE_DELETE, DIFF_TYPE_REPLACE };
 
 #include "emptyconts.cpp"
 
@@ -71,8 +73,8 @@ MainWindow::MainWindow(const Debug debug,
     for (int ix(0); ix < NumOfDiffTypes; ix++)
     {
         pens[ix].setStyle(Qt::NoPen);
-        pens[ix].setColor(m_InitialColors[ix]);
-        pens[ix] = settings.value(m_apszPenSettings[ix], pens[ix]).value<QPen>();
+        pens[ix] = qPen(settings.value(m_apszPenSettings[ix], pens[ix]).value<QPen>());
+        pens[ix].setColor(settings.value(m_apszColorSettings[ix], m_apszInitialColors[ix]).value<QString>());
         brushes[ix].setColor(pens[ix].color());
         brushes[ix].setStyle(Qt::SolidPattern);
         brushes[ix] = settings.value(m_apszBrushSettings[ix], brushes[ix]).value<QBrush>();
@@ -1172,14 +1174,14 @@ void MainWindow::closeEvent(QCloseEvent*)
     settings.setValue("Columns", columnsSpinBox->value());
     settings.setValue("Tolerance/R", toleranceRSpinBox->value());
     settings.setValue("Tolerance/Y", toleranceYSpinBox->value());
-    settings.setValue(m_apszPenSettings[AppDiff], pens[AppDiff]);
-    settings.setValue(m_apszBrushSettings[AppDiff], brushes[AppDiff]);
-    settings.setValue(m_apszPenSettings[InsDiff], pens[InsDiff]);
-    settings.setValue(m_apszBrushSettings[InsDiff], brushes[InsDiff]);
-    settings.setValue(m_apszPenSettings[DelDiff], pens[DelDiff]);
-    settings.setValue(m_apszBrushSettings[DelDiff], brushes[DelDiff]);
-    settings.setValue(m_apszPenSettings[RepDiff], pens[RepDiff]);
-    settings.setValue(m_apszBrushSettings[RepDiff], brushes[RepDiff]);
+
+    for (int ix(0); ix < NumOfDiffTypes; ix++)
+    {
+        settings.setValue(m_apszPenSettings[ix], pens[ix]);
+        settings.setValue(m_apszBrushSettings[ix], brushes[ix]);
+        settings.setValue(m_apszColorSettings[ix], pens[ix].m_sColorName);
+    }
+
     settings.setValue("InitialComparisonMode",
                       compareComboBox->currentIndex());
     settings.setValue("Margins/Exclude", marginsGroupBox->isChecked());
@@ -1975,19 +1977,20 @@ void MainWindow::SynchronizePageRanges()
         QString pages1 = pages1LineEdit->text();
         QString pages2 = pages2LineEdit->text();
 
-        if ((pages1.compare(pages_init1) == 0) && (pages2.compare(pages_init2) == 0))
+        if (((pages1.compare(pages_init1) == 0) || pages1.isEmpty()) &&
+            ((pages2.compare(pages_init2) == 0) || pages2.isEmpty()))
         {
             if (page_count1 < page_count2)
             {
                 for (int ii = page_count1; ii < page_count2; ii++)
-                    pages1.append(", 0");
-                pages1LineEdit->setText(pages1);
+                    pages_init1.append(", 0");
+                pages1LineEdit->setText(pages_init1);
             }
             else
             {
                 for (int ii = page_count2; ii < page_count1; ii++)
-                    pages2.append(", 0");
-                pages2LineEdit->setText(pages2);
+                    pages_init2.append(", 0");
+                pages2LineEdit->setText(pages_init2);
             }
         }
     }

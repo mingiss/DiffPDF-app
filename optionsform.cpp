@@ -25,7 +25,7 @@
 #include <QVBoxLayout>
 
 
-OptionsForm::OptionsForm(QPen *pens, QBrush *brushes, qreal *ruleWidth,
+OptionsForm::OptionsForm(qPen *pens, QBrush *brushes, qreal *ruleWidth,
         bool *showToolTips,  bool *combineTextHighlighting,
         int *cacheSize, int *alpha, int *squareSize, QWidget *parent)
     : QDialog(parent), m_pens(pens), m_brushes(brushes), m_ruleWidth(ruleWidth),
@@ -55,10 +55,10 @@ void OptionsForm::createWidgets()
     {
         colorComboBoxes[ix] = new QComboBox;
         foreach (const QString &name, QColor::colorNames()) {
-            QColor color(name);
-            colorComboBoxes[ix]->addItem(colorSwatch(color), name, color);
+            qColor color(name);
+            colorComboBoxes[ix]->addItem(colorSwatch(color), name, name);
         }
-        colorComboBoxes[ix]->setCurrentIndex(colorComboBoxes[ix]->findData(pens[ix].color()));
+        colorComboBoxes[ix]->setCurrentIndex(colorComboBoxes[ix]->findData(pens[ix].m_sColorName));
     }
 
     QColor color = pens[AppDiff].color();
@@ -221,7 +221,7 @@ void OptionsForm::createConnections()
 
 void OptionsForm::updateColor(int index, DiffTypes eDiffType)
 {
-    QColor color = colorComboBoxes[eDiffType]->itemData(index).value<QColor>();
+    QString color = colorComboBoxes[eDiffType]->itemData(index).value<QString>();
     brushes[eDiffType].setColor(color);
     pens[eDiffType].setColor(color);
 }

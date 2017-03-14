@@ -31,7 +31,7 @@ class OptionsForm : public QDialog
     Q_OBJECT
 
 public:
-    OptionsForm(QPen *pens, QBrush *brushes, qreal *ruleWidth,
+    OptionsForm(qPen *pens, QBrush *brushes, qreal *ruleWidth,
             bool *showToolTips, bool *combineTextHighlighting,
             int *cacheSize, int *alpha, int *squareSize,
             QWidget *parent=0);
@@ -69,7 +69,7 @@ private:
     QSpinBox *cacheSizeSpinBox;
     QDialogButtonBox *buttonBox;
 
-    QPen *m_pens;
+    qPen *m_pens;
     QBrush *m_brushes;
     qreal *m_ruleWidth;
     bool *m_showToolTips;
@@ -77,7 +77,7 @@ private:
     int *m_cacheSize;
     int *m_alpha;
     int *m_squareSize;
-    QPen pens[NumOfDiffTypes];
+    qPen pens[NumOfDiffTypes];
     QBrush brushes[NumOfDiffTypes];
 };
 
