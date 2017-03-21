@@ -7,6 +7,9 @@
   Page range synchronization by adding empty pages (page number 0) to the
   end of the smaller file page range.
 
+- Command line parameter for differences output file.
+  Batch mode when output file specified.
+
 2.1.1
 
 - Tiny bug fix to make sure that the help file is in the right language.

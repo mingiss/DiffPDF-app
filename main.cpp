@@ -73,11 +73,12 @@ int main(int argc, char *argv[])
         else if (optionsOK && arg.startsWith(srepcolor_option))
             srepcolor = arg.mid(srepcolor_option.length());
         else if (optionsOK && (arg == "--help" || arg == "-h")) {
-            out << "usage: diffpdf [options] [file1.pdf [file2.pdf]]\n\n"
+            out << "usage: diffpdf [options] [file1.pdf [file2.pdf [outfile.pdf]]]\n\n"
                 "A GUI program that compares two PDF files and shows "
                 "their differences.\n"
                 "\nThe files are optional and are normally set "
-                "through the user interface.\n\n"
+                "through the user interface.\n"
+                "Program runs in batch mode in case the output file is specified.\n\n"
                 "options:\n"
                 "--help        -h   show this usage text and terminate "
                 "(run the program without this option and press F1 for "
@@ -160,4 +161,3 @@ int main(int argc, char *argv[])
         return app.exec();
     }
 }
-

@@ -160,13 +160,14 @@ the command line options. (This won't work on Windows, although the
 other command line options will.) Here is the <tt>--help</tt>
 output:
 <pre>
-usage: diffpdf [options] [file1.pdf [file2.pdf]]
+usage: diffpdf [options] [file1.pdf [file2.pdf [outfile.pdf]]]
 
 A GUI program that compares two PDF files and shows
 their differences.
 
 The files are optional and are normally set through
 the user interface.
+Program runs in batch mode in case the output file is specified.
 
 options:
 --help             show this usage text and terminate (run the
@@ -179,12 +180,19 @@ options:
                    language, e.g., en for English, cz for Czech;
                    English will be used if there is no translation
                    available
+--basecolor=ccc    set color for appearance differences,
+                   ccc -- one of symbolic SVG color keyword names
+--inscolor=ccc     color for insertions
+--delcolor=ccc     color for deletions
+--repcolor=ccc     color for replaces
 --debug=2          write the text fed to the sequence matcher into
                    temporary files (e.g., /tmp/page1.txt etc.)
 --debug=3          as --debug=2 but also includes coordinates in
                     y, x order
 </pre>
 
+<p>The third file is used to output the result of comparison.
+Action of the output is similar as by pressing &ldquo;Save As&rdquo; button on the main window.</p>
 <p>
 The text reordering is done by the
 <tt>TextItems::columnZoneYxOrder()</tt> method in the
