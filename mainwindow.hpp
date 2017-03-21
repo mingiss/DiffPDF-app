@@ -61,7 +61,7 @@ private slots:
     void setFiles2(const QStringList &filenames);
     void compare();
     void options();
-    void save();
+    void save(){ save(""); }
     void about();
     void help();
     void initialize(const QString &filename1, const QString &filename2);
@@ -81,6 +81,10 @@ private slots:
     void showZones();
     void showMargins();
     void setAMargin(const QPoint &pos);
+
+public:
+    void initialize_batch(const QString &filename1, const QString &filename2);
+    void save(const QString& sSaveFName);
 
 private:
     enum Difference {NoDifference, TextualDifference, VisualDifference};
