@@ -143,11 +143,10 @@ int main(int argc, char *argv[])
     appTranslator.load("diffpdf_" + language, ":/");
     app.installTranslator(&appTranslator);
 
-    MainWindow window(debug, comparisonMode, 
-            savefname.isEmpty()? filename1 : QString(), 
+    MainWindow window(debug, comparisonMode,
+            savefname.isEmpty()? filename1 : QString(),
             savefname.isEmpty()? filename2 : QString(),
             language.left(2)); // We want de not de_DE etc.
-    window.show();
 
     if (!savefname.isEmpty())
     {
@@ -156,6 +155,9 @@ int main(int argc, char *argv[])
         return 0;
     }
     else
+    {
+        window.show();
         return app.exec();
+    }
 }
 
