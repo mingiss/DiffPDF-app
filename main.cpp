@@ -19,6 +19,7 @@
 #include <QTextCodec>
 #include <QTextStream>
 #include <QTranslator>
+#include <QComboBox>
 
 
 int main(int argc, char *argv[])
@@ -46,6 +47,7 @@ int main(int argc, char *argv[])
     const QString srepcolor_option = "--repcolor=";
     QString filename1;
     QString filename2;
+    QString savefname;
     QString language = QLocale::system().name();
     QString sbasecolor;
     QString sinscolor;
@@ -118,6 +120,8 @@ int main(int argc, char *argv[])
             filename1 = arg;
         else if (filename2.isEmpty() && arg.toLower().endsWith(".pdf"))
             filename2 = arg;
+        else if (savefname.isEmpty() && (!filename1.isEmpty()) && (!filename2.isEmpty()))
+            savefname = arg;
         else
             out << "unrecognized argument '" << arg << "'\n";
     }
@@ -139,9 +143,19 @@ int main(int argc, char *argv[])
     appTranslator.load("diffpdf_" + language, ":/");
     app.installTranslator(&appTranslator);
 
-    MainWindow window(debug, comparisonMode, filename1, filename2,
+    MainWindow window(debug, comparisonMode, 
+            savefname.isEmpty()? filename1 : QString(), 
+            savefname.isEmpty()? filename2 : QString(),
             language.left(2)); // We want de not de_DE etc.
     window.show();
-    return app.exec();
+
+    if (!savefname.isEmpty())
+    {
+        window.initialize_batch(filename1, filename2);
+        window.save(savefname);
+        return 0;
+    }
+    else
+        return app.exec();
 }
 

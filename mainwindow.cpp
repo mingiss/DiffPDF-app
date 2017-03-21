@@ -9,6 +9,7 @@
     FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
     for more details.
 */
+
 #include "aboutform.hpp"
 #include "generic.hpp"
 #include "helpform.hpp"
@@ -652,6 +653,13 @@ void MainWindow::initialize(const QString &filename1,
         updateUi();
 }
 
+void MainWindow::initialize_batch(const QString &filename1,
+                            const QString &filename2)
+{
+    setFile1(filename1);
+    setFile2(filename2);
+    compare();
+}
 
 void MainWindow::updateUi()
 {
@@ -1628,51 +1636,60 @@ void MainWindow::options()
     }
 }
 
-
-void MainWindow::save()
+void MainWindow::save(const QString& sSaveFName)
 {
-    SaveForm form(currentPath, &saveFilename, &saveAll, &savePages, this);
-    if (form.exec()) {
-        QString filename1 = filename1LineEdit->text();
-        PdfDocument pdf1 = getPdf(filename1);
-        if (!pdf1)
+    if (sSaveFName.isEmpty())
+    {
+        SaveForm form(currentPath, &saveFilename, &saveAll, &savePages, this);
+        if (!form.exec())
             return;
-        QString filename2 = filename2LineEdit->text();
-        PdfDocument pdf2 = getPdf(filename2);
-        if (!pdf2)
-            return;
-        saveButton->setEnabled(false);
-        QApplication::processEvents();
-        const int originalIndex = viewDiffComboBox->currentIndex();
-        int start = originalIndex;
-        int end = originalIndex + 1;
-        if (saveAll) {
-            start = 0;
-            end = viewDiffComboBox->count();
-        }
-        QString header;
-        const QChar bullet(0x2022);
-        if (savePages == SaveLeftPages)
-            header = tr("DiffPDF %1 %2 %1 %3").arg(bullet)
-                .arg(filename1)
-                .arg(QDate::currentDate().toString(Qt::ISODate));
-        else if (savePages == SaveRightPages)
-            header = tr("DiffPDF %1 %2 %1 %3").arg(bullet)
-                .arg(filename2)
-                .arg(QDate::currentDate().toString(Qt::ISODate));
-        else
-            header = tr("DiffPDF %1 %2 vs. %3 %1 %4").arg(bullet)
-                .arg(filename1).arg(filename2)
-                .arg(QDate::currentDate().toString(Qt::ISODate));
-        if (saveFilename.toLower().endsWith(".pdf"))
-            saveAsPdf(start, end, pdf1, pdf2, header);
-        else
-            saveAsImages(start, end, pdf1, pdf2, header);
-        updateViews(originalIndex);
-        if (saveFilename.toLower().endsWith(".pdf"))
-            writeLine(tr("Saved %1").arg(saveFilename));
-        saveButton->setEnabled(true);
     }
+    else
+    {
+        saveFilename = sSaveFName;
+        saveAll = true;
+        savePages = SaveBothPages;
+    }
+
+    QString filename1 = filename1LineEdit->text();
+    PdfDocument pdf1 = getPdf(filename1);
+    if (!pdf1)
+        return;
+    QString filename2 = filename2LineEdit->text();
+    PdfDocument pdf2 = getPdf(filename2);
+    if (!pdf2)
+        return;
+    saveButton->setEnabled(false);
+    QApplication::processEvents();
+    const int originalIndex = viewDiffComboBox->currentIndex();
+    int start = originalIndex;
+    int end = originalIndex + 1;
+    if (saveAll) {
+        start = 0;
+        end = viewDiffComboBox->count();
+    }
+    QString header;
+    const QChar bullet(0x2022);
+    if (savePages == SaveLeftPages)
+        header = tr("DiffPDF %1 %2 %1 %3").arg(bullet)
+            .arg(filename1)
+            .arg(QDate::currentDate().toString(Qt::ISODate));
+    else if (savePages == SaveRightPages)
+        header = tr("DiffPDF %1 %2 %1 %3").arg(bullet)
+            .arg(filename2)
+            .arg(QDate::currentDate().toString(Qt::ISODate));
+    else
+        header = tr("DiffPDF %1 %2 vs. %3 %1 %4").arg(bullet)
+            .arg(filename1).arg(filename2)
+            .arg(QDate::currentDate().toString(Qt::ISODate));
+    if (saveFilename.toLower().endsWith(".pdf"))
+        saveAsPdf(start, end, pdf1, pdf2, header);
+    else
+        saveAsImages(start, end, pdf1, pdf2, header);
+    updateViews(originalIndex);
+    if (saveFilename.toLower().endsWith(".pdf"))
+        writeLine(tr("Saved %1").arg(saveFilename));
+    saveButton->setEnabled(true);
 }
 
 
@@ -1766,10 +1783,10 @@ bool MainWindow::paintSaveAs(QPainter *painter, const int index,
         .value<PagePair>();
     if (pair.isNull())
         return false;
-    PdfPage page1(pdf1->page(pair.left));
+    PdfPage page1((pair.left >= 0)? pdf1->page(pair.left) : m_pEmptyDoc->page(0));
     if (!page1)
         return false;
-    PdfPage page2(pdf2->page(pair.left));
+    PdfPage page2((pair.right >= 0)? pdf2->page(pair.right) : m_pEmptyDoc->page(0));
     if (!page2)
         return false;
     const QPair<QString, QString> keys = cacheKeys(index, pair);
