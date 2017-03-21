@@ -1783,10 +1783,10 @@ bool MainWindow::paintSaveAs(QPainter *painter, const int index,
         .value<PagePair>();
     if (pair.isNull())
         return false;
-    PdfPage page1(pdf1->page(pair.left));
+    PdfPage page1((pair.left >= 0)? pdf1->page(pair.left) : m_pEmptyDoc->page(0));
     if (!page1)
         return false;
-    PdfPage page2(pdf2->page(pair.left));
+    PdfPage page2((pair.right >= 0)? pdf2->page(pair.right) : m_pEmptyDoc->page(0));
     if (!page2)
         return false;
     const QPair<QString, QString> keys = cacheKeys(index, pair);
