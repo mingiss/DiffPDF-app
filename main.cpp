@@ -45,14 +45,19 @@ int main(int argc, char *argv[])
     const QString sinscolor_option = "--inscolor=";
     const QString sdelcolor_option = "--delcolor=";
     const QString srepcolor_option = "--repcolor=";
+    const QString sopacity_option = "--opac=";
+    const QString srange_option = "--range=";
     QString filename1;
     QString filename2;
     QString savefname;
+    QString srange1;
+    QString srange2;
     QString language = QLocale::system().name();
     QString sbasecolor;
     QString sinscolor;
     QString sdelcolor;
     QString srepcolor;
+    QString salpha;
     bool optionsOK = true;
     Debug debug = DebugOff;
     foreach (const QString arg, args) {
@@ -72,6 +77,12 @@ int main(int argc, char *argv[])
             sdelcolor = arg.mid(sdelcolor_option.length());
         else if (optionsOK && arg.startsWith(srepcolor_option))
             srepcolor = arg.mid(srepcolor_option.length());
+        else if (optionsOK && arg.startsWith(sopacity_option))
+            salpha = arg.mid(sopacity_option.length());
+        else if (optionsOK && arg.startsWith(srange_option) && srange1.isEmpty())
+            srange1 = arg.mid(srange_option.length());
+        else if (optionsOK && arg.startsWith(srange_option) && srange2.isEmpty())
+            srange2 = arg.mid(srange_option.length());
         else if (optionsOK && (arg == "--help" || arg == "-h")) {
             out << "usage: diffpdf [options] [file1.pdf [file2.pdf [outfile.pdf]]]\n\n"
                 "A GUI program that compares two PDF files and shows "
@@ -89,15 +100,20 @@ int main(int argc, char *argv[])
                 "Characters\n"
                 "--words       -w   set the initial comparison mode to "
                 "Words\n"
+                "--range=rrr        set the page range of the input file\n"
+                "                   up to two range parameters could be specified, for each input file respectively\n"
+                "                   rrr: comma separated list of page numbers or intervals (--range=1-3,0,4-13 for example)\n"
+                "                   use page number 0 for empty page insertion, spaces are not allowed\n"
                 "--language=xx      set the program to use the given "
                 "translation language, e.g., en for English, cz for "
                 "Czech; English will be used if there is no translation "
                 "available\n"
                 "--basecolor=ccc    set color for appearance differences, "
-                "ccc -- one of symbolic SVG color keyword names\n"
+                "ccc: one of symbolic SVG color keyword names (red, green etc.)\n"
                 "--inscolor=ccc     color for insertions\n"
                 "--delcolor=ccc     color for deletions\n"
                 "--repcolor=ccc     color for replaces\n"
+                "--opac=nn          opacity of difference markers, nn: percent value\n"
                 "--debug=2          write the text fed to the sequence "
                 "matcher into temporary files (e.g., /tmp/page1.txt "
                 "etc.)\n"
@@ -135,6 +151,8 @@ int main(int argc, char *argv[])
         settings.setValue(MainWindow::m_apszColorSettings[DelDiff], sdelcolor);
     if (!srepcolor.isEmpty())
         settings.setValue(MainWindow::m_apszColorSettings[RepDiff], srepcolor);
+    if (!salpha.isEmpty())
+        settings.setValue("Opacity", salpha);
 
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + language,
@@ -147,6 +165,7 @@ int main(int argc, char *argv[])
     MainWindow window(debug, comparisonMode,
             savefname.isEmpty()? filename1 : QString(),
             savefname.isEmpty()? filename2 : QString(),
+            srange1, srange2,
             language.left(2)); // We want de not de_DE etc.
 
     if (!savefname.isEmpty())

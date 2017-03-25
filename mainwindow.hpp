@@ -48,6 +48,7 @@ public:
     MainWindow(const Debug debug,
             const InitialComparisonMode comparisonMode,
             const QString &filename1, const QString &filename2,
+            const QString &srange1, const QString &srange2,
             const QString &language, QWidget *parent=0);
 
 protected:
@@ -89,7 +90,8 @@ public:
 private:
     enum Difference {NoDifference, TextualDifference, VisualDifference};
 
-    void createWidgets(const QString &filename1, const QString &filename2);
+    void createWidgets(const QString &filename1, const QString &filename2,
+                        const QString &srange1, const QString &srange2);
     void createCentralArea();
     void createDockWidgets();
     void createConnections();

@@ -2,10 +2,11 @@
 
 - Different colors for insertions, deletions and replaces. Could be
   configured in Options dialog or initialized through command line arguments.
+  Command line argument for opacity of difference markers.
 
 - Empty page in comparison page chains, specified through page number 0.
-  Page range synchronization by adding empty pages (page number 0) to the
-  end of the smaller file page range.
+  Page range automatic synchronization by adding empty pages (page number 0) to the
+  end of the smaller file page range. Command line parameters for page ranges.
 
 - Command line parameter for differences output file.
   Batch mode when output file specified.

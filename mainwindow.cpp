@@ -55,6 +55,7 @@ const int MainWindow::m_aiDiffTypeMasks[NumOfDiffTypes] = { 0, DIFF_TYPE_INSERT,
 MainWindow::MainWindow(const Debug debug,
         const InitialComparisonMode comparisonMode,
         const QString &filename1, const QString &filename2,
+        const QString &srange1, const QString &srange2,
         const QString &language, QWidget *parent)
     : QMainWindow(parent),
       controlDockArea(Qt::RightDockWidgetArea),
@@ -83,7 +84,7 @@ MainWindow::MainWindow(const Debug debug,
     QPixmapCache::setCacheLimit(1000 *
             qBound(1, settings.value("CacheSizeMB", 25).toInt(), 100));
 
-    createWidgets(filename1, filename2);
+    createWidgets(filename1, filename2, srange1, srange2);
     createCentralArea();
     createDockWidgets();
     createConnections();
@@ -128,8 +129,8 @@ MainWindow::MainWindow(const Debug debug,
 }
 
 
-void MainWindow::createWidgets(const QString &filename1,
-                               const QString &filename2)
+void MainWindow::createWidgets(const QString &filename1, const QString &filename2,
+                                const QString &srange1, const QString &srange2)
 {
     setFile1Button = new QPushButton(tr("File #&1..."));
     setFile1Button->setToolTip(tr("<p>Choose the first (left hand) file "
@@ -161,10 +162,12 @@ void MainWindow::createWidgets(const QString &filename1,
                 "file2.pdf.</p><p>Empty page could be specified using page "
                 "number 0. Page ranges of the latter example would read then "
                 "as 1-13, 0, 14-30 for file1.pdf and 1-31 for file1.pdf.</p>"));
+    pages1LineEdit->setText(srange1);
     comparePages2Label = new QLabel(tr("&Pages:"));
     pages2LineEdit = new QLineEdit;
     comparePages2Label->setBuddy(pages2LineEdit);
     pages2LineEdit->setToolTip(pages1LineEdit->toolTip());
+    pages2LineEdit->setText(srange2);
     compareButton = new QPushButton(tr("&Compare"));
     compareButton->setEnabled(false);
     compareButton->setToolTip(tr("<p>Click to compare (or re-compare) "
@@ -1245,8 +1248,12 @@ void MainWindow::setFile1(QString filename)
                     "color: darkgreen'>DiffPDF: Choose File #2.</p>"));
         page2Label->clear();
         updateUi();
-        int page_count = writeFileInfo(filename);
-        pages1LineEdit->setText(tr("1-%1").arg(page_count));
+        QString srange1 = pages1LineEdit->text();
+        if (srange1.isEmpty())
+        {
+            int page_count = writeFileInfo(filename);
+            pages1LineEdit->setText(tr("1-%1").arg(page_count));
+        }
         SynchronizePageRanges();
         currentPath = QFileInfo(filename).canonicalPath();
         setFile2Button->setFocus();
@@ -1280,8 +1287,12 @@ void MainWindow::setFile2(QString filename)
                     "color: darkgreen'>DiffPDF: Choose File #1.</p>"));
         page1Label->clear();
         updateUi();
-        int page_count = writeFileInfo(filename);
-        pages2LineEdit->setText(tr("1-%1").arg(page_count));
+        QString srange2 = pages2LineEdit->text();
+        if (srange2.isEmpty())
+        {
+            int page_count = writeFileInfo(filename);
+            pages2LineEdit->setText(tr("1-%1").arg(page_count));
+        }
         SynchronizePageRanges();
         currentPath = QFileInfo(filename).canonicalPath();
         compareButton->setFocus();
@@ -1987,7 +1998,6 @@ void MainWindow::SynchronizePageRanges()
     {
         QString pages1 = pages1LineEdit->text();
         QString pages2 = pages2LineEdit->text();
-
         if (((pages1.compare(pages_init1) == 0) || pages1.isEmpty()) &&
             ((pages2.compare(pages_init2) == 0) || pages2.isEmpty()))
         {
