@@ -2,6 +2,7 @@
 
 - Different colors for insertions, deletions and replaces. Could be
   configured in Options dialog or initialized through command line arguments.
+  Command line argument for opacity of difference markers.
 
 - Empty page in comparison page chains, specified through page number 0.
   Page range synchronization by adding empty pages (page number 0) to the

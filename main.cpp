@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     const QString sinscolor_option = "--inscolor=";
     const QString sdelcolor_option = "--delcolor=";
     const QString srepcolor_option = "--repcolor=";
+    const QString sopacity_option = "--opac=";
     QString filename1;
     QString filename2;
     QString savefname;
@@ -53,6 +54,7 @@ int main(int argc, char *argv[])
     QString sinscolor;
     QString sdelcolor;
     QString srepcolor;
+    QString salpha;
     bool optionsOK = true;
     Debug debug = DebugOff;
     foreach (const QString arg, args) {
@@ -72,6 +74,8 @@ int main(int argc, char *argv[])
             sdelcolor = arg.mid(sdelcolor_option.length());
         else if (optionsOK && arg.startsWith(srepcolor_option))
             srepcolor = arg.mid(srepcolor_option.length());
+        else if (optionsOK && arg.startsWith(sopacity_option))
+            salpha = arg.mid(sopacity_option.length());
         else if (optionsOK && (arg == "--help" || arg == "-h")) {
             out << "usage: diffpdf [options] [file1.pdf [file2.pdf [outfile.pdf]]]\n\n"
                 "A GUI program that compares two PDF files and shows "
@@ -98,6 +102,7 @@ int main(int argc, char *argv[])
                 "--inscolor=ccc     color for insertions\n"
                 "--delcolor=ccc     color for deletions\n"
                 "--repcolor=ccc     color for replaces\n"
+                "--opac=nn          opacity of difference markers, nn -- percent value\n"
                 "--debug=2          write the text fed to the sequence "
                 "matcher into temporary files (e.g., /tmp/page1.txt "
                 "etc.)\n"
@@ -135,6 +140,8 @@ int main(int argc, char *argv[])
         settings.setValue(MainWindow::m_apszColorSettings[DelDiff], sdelcolor);
     if (!srepcolor.isEmpty())
         settings.setValue(MainWindow::m_apszColorSettings[RepDiff], srepcolor);
+    if (!salpha.isEmpty())
+        settings.setValue("Opacity", salpha);
 
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + language,
