@@ -1,4 +1,4 @@
-2.1.2
+2.1.4
 
 - Different colors for insertions, deletions and replaces. Could be
   configured in Options dialog or initialized through command line arguments.

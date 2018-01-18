@@ -1,0 +1,21 @@
+----------------------------------------------------
+Merge src_orig fixes, according to the excerpt of file CHANGES in
+    F:\kp\src\vtex\pdf\DiffPDF\bin_arc\win32\diffpdf\CHANGES  
+
+Fixes follow:
+
+2.1.3
+
+- Minor GUI fixes.
+
+- Subtle bug fix by Bryan Huh which _may_ help resolve the bug that
+  affects saving when page ranges are in effect.
+
+2.1.2
+
+- Minor GUI bug fixes.
+
+- Minor translation fixes.
+
+- Updated copyright year.
+
