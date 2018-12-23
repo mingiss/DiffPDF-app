@@ -3,8 +3,6 @@ NOTES.txt
 *.qm
 *.lout
 diffpdf
-*.pdf
-!empty.pdf  
 Makefile
 *.a
 *.o

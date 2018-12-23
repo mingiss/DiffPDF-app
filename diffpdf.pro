@@ -68,7 +68,6 @@ exists($(HOME)/opt/poppler020/) {
 #    }
 #}
 
-win32
-{
+win32 {
     INCLUDEPATH += D:\kp\bin\Qt\5.10.0\mingw53_32\include\QtWidgets
 }
