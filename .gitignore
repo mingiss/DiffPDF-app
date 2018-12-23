@@ -25,3 +25,4 @@ moc_*
 qrc_*.cpp
 ui_*.h
 .*.swp
+test/diff*.pdf
