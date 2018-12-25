@@ -1,6 +1,5 @@
-#! /bin/bash
-
 lrelease diffpdf.pro
-qmake
+qmake diffpdf.pro 
 make
+
 

@@ -3,9 +3,10 @@ NOTES.txt
 *.qm
 *.lout
 diffpdf
-Makefile
+Makefile*
 *.a
 *.o
+object_script*
 *.py[co]
 *.so
 *.sw[nop]

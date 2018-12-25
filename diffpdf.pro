@@ -31,33 +31,43 @@ TRANSLATIONS += diffpdf_fr.ts
 TRANSLATIONS += diffpdf_de.ts
 CODECFORTR    = UTF-8
 LIBS	     += -lpoppler-qt4
-win32{
+win32 {
     CONFIG += release
+#   QMAKE_CC = gcc
+#   QMAKE_CXX = g++
+    COMPNAME = $(COMPUTERNAME)
+    eval(COMPNAME = "IT585") {
+        QTMINGWHOME = D:\kp\bin\Qt\5.10.0\mingw53_32
+        }
+    eval(COMPNAME = "BAJ4XP") {
+        QTMINGWHOME = D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32
+        }
+    INCLUDEPATH += $${QTMINGWHOME}\include\QtWidgets
     }
-exists($(HOME)/opt/poppler020/){
+exists($(HOME)/opt/poppler020/) {
     message(Using locally built Poppler library)
     INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/cpp
     INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/qt4
     LIBS += -Wl,-rpath -Wl,$(HOME)/opt/poppler020/lib -Wl,-L$(HOME)/opt/poppler020/lib
     }
-else{
-    exists(/poppler_lib){
+else {
+    exists(/poppler_lib) {
         message(Using locally built Poppler library on Windows)
         INCLUDEPATH += /c/poppler_lib/include/poppler/cpp
         INCLUDEPATH += /c/poppler_lib/include/poppler/qt4
         LIBS += -Wl,-rpath -Wl,/c/poppler_lib/bin -Wl,-L/c/poppler_lib/bin
         }
-    else{
-        exists(/usr/include/poppler/qt4){
+    else {
+        exists(/usr/include/poppler/qt4) {
             INCLUDEPATH += /usr/include/poppler/cpp
             INCLUDEPATH += /usr/include/poppler/qt4
             }
-        else{
-            exists(/usr/local/include/poppler/qt4){
+        else {
+            exists(/usr/local/include/poppler/qt4) {
                 INCLUDEPATH += /usr/local/include/poppler/cpp
                 INCLUDEPATH += /usr/local/include/poppler/qt4
                 }
-            else{
+            else {
                 INCLUDEPATH += ../poppler/src_kp/poppler/cpp
                 INCLUDEPATH += ../poppler/src_kp/poppler/qt4/src
                 }
@@ -76,7 +86,3 @@ else{
 #	INCLUDEPATH += /usr/local/include/podofo
 #    }
 #}
-
-win32 {
-    INCLUDEPATH += D:\kp\bin\Qt\5.10.0\mingw53_32\include\QtWidgets
-}
