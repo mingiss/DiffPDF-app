@@ -37,32 +37,32 @@ same). False positives are quite rare. (There are no false
 negatives&mdash;differences are never missed.)
 
 <h3 id="txt">Words Comparison Mode</h3>
-<p>The default comparison mode is Words which does a smart text 
-comparison word by word for each pair of pages. This mode is 
-fairly liberal regarding 
-whitespace and tries to ignore layout changes (within a page) insofar 
-as possible. It also treats all hyphens (soft-hyphen, minus sign, etc.), 
-the same, that is, as a plain hyphen. 
+<p>The default comparison mode is Words which does a smart text
+comparison word by word for each pair of pages. This mode is
+fairly liberal regarding
+whitespace and tries to ignore layout changes (within a page) insofar
+as possible. It also treats all hyphens (soft-hyphen, minus sign, etc.),
+the same, that is, as a plain hyphen.
 This mode is best for alphabetic languages like English.
 
 <h3 id="chr">Characters Comparison Mode</h3>
-<p>The Characters comparison mode does a smart text 
-comparison character by character for each pair of pages. This mode is 
-liberal regarding whitespace at the ends of lines and tries to 
-ignore layout changes (within a page) insofar as possible. 
-It also treats all hyphens (soft-hyphen, minus sign, etc.), 
-the same, that is, as a plain hyphen. 
+<p>The Characters comparison mode does a smart text
+comparison character by character for each pair of pages. This mode is
+liberal regarding whitespace at the ends of lines and tries to
+ignore layout changes (within a page) insofar as possible.
+It also treats all hyphens (soft-hyphen, minus sign, etc.),
+the same, that is, as a plain hyphen.
 This mode is best for logographic languages like Chinese and Japanese.
 
 <h3 id="vis">Appearance Comparison Mode</h3>
-<p>The Appearance comparison mode 
-can be used to detect changes in fonts, diagrams, or any other visual 
-aspects. This mode is absolutely strict and compares each pair of 
-pages pixel 
-for pixel. By default this mode shows differences using highlighting 
-just like the Words and Characters modes do. However, it is also 
-possible to compare using 
-composition modes which can be useful to detect very small and subtle 
+<p>The Appearance comparison mode
+can be used to detect changes in fonts, diagrams, or any other visual
+aspects. This mode is absolutely strict and compares each pair of
+pages pixel
+for pixel. By default this mode shows differences using highlighting
+just like the Words and Characters modes do. However, it is also
+possible to compare using
+composition modes which can be useful to detect very small and subtle
 differences that aren't immediately apparent.
 
 <h3 id="zon">Zoning</h3>
@@ -82,7 +82,7 @@ non-trivial; changing the tolerances may help.
 <p>The Tolerance/R value is the maximum distance between text (i.e., word)
 rectangles for the rectangles to be placed in the same zone. Lower
 values create more zones; higher values create fewer zones. More
-zones are  expensive to compute but can produce more accurate 
+zones are  expensive to compute but can produce more accurate
 results; fewer zones may reduce false positives. The Tolerance/Y value
 is is used for rounding <i>y</i> coordinates to the nearest multiple of
 this value. For example, if Tolerance/Y is 5
@@ -104,12 +104,12 @@ for not to loose it from the comparison chain. Empty page could be
 specified using page number 0. The latter example of page ranges then
 would read as &ldquo;1-3, 0, 4-12&rdquo; for the original file and
 &ldquo;1-13&rdquo; for the file with page 4 inserted.</p>
-<p>After the ordinary file is selected in case if page count of both files 
-are different, page range fields are synchronized automatically to have 
-equal amount of pages&mdash;empty pages (page number 0) are added to the 
-end of the smaller file page range (&ldquo;1-13, 0&rdquo;, for example). 
+<p>After the ordinary file is selected in case if page count of both files
+are different, page range fields are synchronized automatically to have
+equal amount of pages&mdash;empty pages (page number 0) are added to the
+end of the smaller file page range (&ldquo;1-13, 0&rdquo;, for example).
 Synchronization is performed just in case if both ranges are in their
-initial state&mdash;contains single first to last page range or are 
+initial state&mdash;contains single first to last page range or are
 manually cleared.</p>
 
 <h3 id="mar">Margins</h3>
@@ -126,16 +126,16 @@ using the margin spinboxes.
 lets you save a <tt>.pdf</tt> file with the highlighted changes, or
 individual image files (e.g., in <tt>.png</tt> or various other common
 image formats). The dialog supports saving the current or all left
-pages, right pages, or both pages. 
+pages, right pages, or both pages.
 
 <h3 id="opt">The Options Dialog</h3>
-<p>This dialog is invoked by clicking the <b>Options</b> button. 
-The dialog supports changing the highlighting colors, whether to use 
-a pen or fill or both, and the fill's opacity. The Square Size is used 
-when doing Appearance mode comparisons: the smaller the size the more 
-fine-grained the highlighting is&mdash;and the slower to compute. 
-The Rule width determines the thickness of the margin rules which are 
-used to indicate the vertical position of differences; the rules can 
+<p>This dialog is invoked by clicking the <b>Options</b> button.
+The dialog supports changing the highlighting colors, whether to use
+a pen or fill or both, and the fill's opacity. The Square Size is used
+when doing Appearance mode comparisons: the smaller the size the more
+fine-grained the highlighting is&mdash;and the slower to compute.
+The Rule width determines the thickness of the margin rules which are
+used to indicate the vertical position of differences; the rules can
 be switched off using a Rule width of 0.
 
 <h3 id="dock">Dock Windows</h3>
@@ -148,14 +148,14 @@ views may be shown tabbed: if there is enough space they can be dragged
 out of their tabs and all shown in full.
 
 <h3 id="cli">Command Line Usage</h3>
-<p>Although <font color="darkgreen">DiffPDF</font> is a GUI program, if run from a console with two PDF 
-files listed on the command line, 
-<font color="darkgreen">DiffPDF</font> will start up and 
-immediately compare them in Words mode, or in Appearance mode 
-if their names are preceded with <tt>-a</tt> or 
-<tt>--appearance</tt> on the command line, 
-or in Characters mode if their names are preceded with <tt>-c</tt> or 
-<tt>--character</tt> on the command line. Run 
+<p>Although <font color="darkgreen">DiffPDF</font> is a GUI program, if run from a console with two PDF
+files listed on the command line,
+<font color="darkgreen">DiffPDF</font> will start up and
+immediately compare them in Words mode, or in Appearance mode
+if their names are preceded with <tt>-a</tt> or
+<tt>--appearance</tt> on the command line,
+or in Characters mode if their names are preceded with <tt>-c</tt> or
+<tt>--character</tt> on the command line. Run
 <font color="darkgreen">DiffPDF</font> with <tt>--help</tt> to see all
 the command line options. (This won't work on Windows, although the
 other command line options will.) Here is the <tt>--help</tt>
@@ -169,6 +169,10 @@ their differences.
 The files are optional and are normally set through
 the user interface.
 Program runs in batch mode in case the output file is specified.
+In that case error code is returned:
+0     no differences
+1     files are different
+2     in case of errors
 
 options:
 --help             show this usage text and terminate (run the
@@ -178,9 +182,9 @@ options:
 --characters  -c   set the initial comparison mode to Characters
 --words       -w   set the initial comparison mode to Words
 --range=rrr        set the page range of the input file
-                   up to two range parameters could be specified, 
+                   up to two range parameters could be specified,
                    for each input file respectively
-                   rrr: comma separated list of page numbers or 
+                   rrr: comma separated list of page numbers or
                    intervals (--range=1-3,0,4-13 for example)
                    use page number 0 for empty page insertion,
                    spaces are not allowed
@@ -209,7 +213,7 @@ The text reordering is done by the
 (Note that when using <tt>--debug3</tt> coordinates are output in
 <i>y</i>, <i>x</i> order.)
 
-<p>If you're specifically looking for a command line PDF comparison 
-tool, e.g., for automated testing, try 
+<p>If you're specifically looking for a command line PDF comparison
+tool, e.g., for automated testing, try
 <a href="http://www.qtrac/eu/comparepdf.html">comparepdf</a>.
 

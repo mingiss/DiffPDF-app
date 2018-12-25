@@ -60,7 +60,7 @@ private slots:
     void setFile2(QString filename=QString());
     void setFiles1(const QStringList &filenames);
     void setFiles2(const QStringList &filenames);
-    void compare();
+    int compare(); // returns number of diferent pages obtained; -1 in case of errors
     void options();
     void save(){ save(""); }
     void about();
@@ -84,7 +84,11 @@ private slots:
     void setAMargin(const QPoint &pos);
 
 public:
-    void initialize_batch(const QString &filename1, const QString &filename2);
+    // returns error code:
+    //      0 no differences,
+    //      1 differences were obtained
+    //      2 in case of errors
+    int initialize_batch(const QString &filename1, const QString &filename2);
     void save(const QString& sSaveFName);
 
 private:

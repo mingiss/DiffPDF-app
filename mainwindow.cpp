@@ -656,12 +656,17 @@ void MainWindow::initialize(const QString &filename1,
         updateUi();
 }
 
-void MainWindow::initialize_batch(const QString &filename1,
+int MainWindow::initialize_batch(const QString &filename1,
                             const QString &filename2)
 {
     setFile1(filename1);
     setFile2(filename2);
-    compare();
+    int err = compare();
+    if (err > 0)
+        err = 1;
+    else if (err < 0)
+        err = 2;
+    return err;
 }
 
 void MainWindow::updateUi()
@@ -1431,23 +1436,23 @@ QList<int> MainWindow::getPageList(int which, PdfDocument pdf)
 }
 
 
-void MainWindow::compare()
+int MainWindow::compare()
 {
     if (compareButton->text() == tr("&Cancel")) {
         cancel = true;
         compareButton->setText(tr("&Compare"));
         compareButton->setEnabled(true);
-        return;
+        return -1;
     }
     cancel = false;
     QString filename1 = filename1LineEdit->text();
     PdfDocument pdf1 = getPdf(filename1);
     if (!pdf1)
-        return;
+        return -1;
     QString filename2 = filename2LineEdit->text();
     PdfDocument pdf2 = getPdf(filename2);
     if (!pdf2) {
-        return;
+        return -1;
     }
 
     comparePrepareUi();
@@ -1456,6 +1461,8 @@ void MainWindow::compare()
     const QPair<int, int> pair = comparePages(filename1, pdf1, filename2,
                                               pdf2);
     compareUpdateUi(pair, time.elapsed());
+
+    return viewDiffComboBox->count() - 1;
 }
 
 

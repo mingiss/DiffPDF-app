@@ -171,9 +171,9 @@ int main(int argc, char *argv[])
 
     if (!savefname.isEmpty())
     {
-        window.initialize_batch(filename1, filename2);
+        int err = window.initialize_batch(filename1, filename2);
         window.save(savefname);
-        return 0;
+        return err;
     }
     else
     {
