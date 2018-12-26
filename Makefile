@@ -173,12 +173,10 @@ Makefile: diffpdf.pro D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++/qma
 		diffpdf.pro \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/qtmain.prl \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Core.prl \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxContainerd.prl \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxBased.prl \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Guid.prl \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Cored.prl \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Widgetsd.prl \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Gui.prl
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxContainer.prl \
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxBase.prl \
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Gui.prl \
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Widgets.prl
 	$(QMAKE) -o Makefile diffpdf.pro
 D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\spec_pre.prf:
 D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\qdevice.pri:
@@ -294,12 +292,10 @@ D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\lex.prf:
 diffpdf.pro:
 D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/qtmain.prl:
 D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Core.prl:
-D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxContainerd.prl:
-D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxBased.prl:
-D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Guid.prl:
-D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Cored.prl:
-D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Widgetsd.prl:
+D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxContainer.prl:
+D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxBase.prl:
 D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Gui.prl:
+D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Widgets.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile diffpdf.pro
 

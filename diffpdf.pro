@@ -47,8 +47,8 @@ win32 {
     INCLUDEPATH += $${QTMINGWHOME}/include/QtWidgets
     INCLUDEPATH += $${QTMINGWHOME}/include/QtPrintSupport 
     LIBS        += -Wl,-L$${QTMINGWHOME}/lib 
-    LIBS	    += -lQt5PrintSupportd
-    LIBS	    += -lQt5AxContainerd
+    LIBS	    += -lQt5PrintSupport
+    LIBS	    += -lQt5AxContainer
     }
 LIBS	     += -lpoppler-$${QTVERS}
 exists($(HOME)/opt/poppler020/) {
@@ -80,8 +80,8 @@ else {
                 INCLUDEPATH += libs/poppler/cpp
                 INCLUDEPATH += libs/poppler/$${QTVERS}/src
                 LIBS        += -Wl,-Llibs/poppler/$${QTVERS}/release 
-                LIBS	    += -lfreetype
-                LIBS        += -Wl,-Llibs/freetype2/objs/.libs 
+                # LIBS        += -lfreetype
+                # LIBS        += -Wl,-Llibs/freetype2/objs/.libs 
                 }
             }
         }
