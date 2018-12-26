@@ -30,7 +30,8 @@ TRANSLATIONS += diffpdf_cz.ts
 TRANSLATIONS += diffpdf_fr.ts
 TRANSLATIONS += diffpdf_de.ts
 CODECFORTR    = UTF-8
-LIBS	     += -lpoppler-qt4
+QMAKE_CXXFLAGS += -std=c++11
+QTVERS = qt4
 win32 {
     CONFIG += release
 #   QMAKE_CC = gcc
@@ -41,35 +42,40 @@ win32 {
         }
     eval(COMPNAME = "BAJ4XP") {
         QTMINGWHOME = D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32
+        QTVERS = qt5
         }
     INCLUDEPATH += $${QTMINGWHOME}\include\QtWidgets
+    INCLUDEPATH += $${QTMINGWHOME}\include\QtPrintSupport 
     }
+LIBS	     += -lpoppler-$${QTVERS}
 exists($(HOME)/opt/poppler020/) {
     message(Using locally built Poppler library)
     INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/cpp
-    INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/qt4
+    INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/$${QTVERS}
     LIBS += -Wl,-rpath -Wl,$(HOME)/opt/poppler020/lib -Wl,-L$(HOME)/opt/poppler020/lib
     }
 else {
-    exists(/poppler_lib) {
+    exists(/c/poppler_lib) {
         message(Using locally built Poppler library on Windows)
         INCLUDEPATH += /c/poppler_lib/include/poppler/cpp
-        INCLUDEPATH += /c/poppler_lib/include/poppler/qt4
+        INCLUDEPATH += /c/poppler_lib/include/poppler/$${QTVERS}
         LIBS += -Wl,-rpath -Wl,/c/poppler_lib/bin -Wl,-L/c/poppler_lib/bin
         }
     else {
-        exists(/usr/include/poppler/qt4) {
+        exists(/usr/include/poppler/$${QTVERS}) {
             INCLUDEPATH += /usr/include/poppler/cpp
-            INCLUDEPATH += /usr/include/poppler/qt4
+            INCLUDEPATH += /usr/include/poppler/$${QTVERS}
             }
         else {
-            exists(/usr/local/include/poppler/qt4) {
+            exists(/usr/local/include/poppler/$${QTVERS}) {
                 INCLUDEPATH += /usr/local/include/poppler/cpp
-                INCLUDEPATH += /usr/local/include/poppler/qt4
+                INCLUDEPATH += /usr/local/include/poppler/$${QTVERS}
                 }
             else {
-                INCLUDEPATH += ../poppler/src_kp/poppler/cpp
-                INCLUDEPATH += ../poppler/src_kp/poppler/qt4/src
+                # INCLUDEPATH += ../../../poppler/src_kp/poppler/cpp
+                # INCLUDEPATH += ../../../poppler/src_kp/poppler/$${QTVERS}/src
+                INCLUDEPATH += libs/poppler/cpp
+                INCLUDEPATH += libs/poppler/$${QTVERS}/src
                 }
             }
         }

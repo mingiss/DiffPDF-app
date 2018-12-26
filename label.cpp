@@ -12,6 +12,7 @@
 
 #include "generic.hpp"
 #include "label.hpp"
+#include <QMimeData>
 #include <QDragEnterEvent>
 #include <QDragEnterEvent>
 #include <QMouseEvent>
