@@ -38,14 +38,17 @@ win32 {
 #   QMAKE_CXX = g++
     COMPNAME = $(COMPUTERNAME)
     eval(COMPNAME = "IT585") {
-        QTMINGWHOME = D:\kp\bin\Qt\5.10.0\mingw53_32
+        QTMINGWHOME = D:/kp/bin/Qt/5.10.0/mingw53_32
         }
     eval(COMPNAME = "BAJ4XP") {
-        QTMINGWHOME = D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32
+        QTMINGWHOME = D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32
         QTVERS = qt5
         }
-    INCLUDEPATH += $${QTMINGWHOME}\include\QtWidgets
-    INCLUDEPATH += $${QTMINGWHOME}\include\QtPrintSupport 
+    INCLUDEPATH += $${QTMINGWHOME}/include/QtWidgets
+    INCLUDEPATH += $${QTMINGWHOME}/include/QtPrintSupport 
+    LIBS        += -Wl,-L$${QTMINGWHOME}/lib 
+    LIBS	    += -lQt5PrintSupportd
+    LIBS	    += -lQt5AxContainerd
     }
 LIBS	     += -lpoppler-$${QTVERS}
 exists($(HOME)/opt/poppler020/) {
@@ -76,6 +79,9 @@ else {
                 # INCLUDEPATH += ../../../poppler/src_kp/poppler/$${QTVERS}/src
                 INCLUDEPATH += libs/poppler/cpp
                 INCLUDEPATH += libs/poppler/$${QTVERS}/src
+                LIBS        += -Wl,-Llibs/poppler/$${QTVERS}/release 
+                LIBS	    += -lfreetype
+                LIBS        += -Wl,-Llibs/freetype2/objs/.libs 
                 }
             }
         }
