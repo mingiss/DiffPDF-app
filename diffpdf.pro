@@ -88,6 +88,8 @@ else {
                 # LIBS        += -Wl,-Llibs/libjpeg/qtc/jpeg/release
                 # LIBS        += -Wl,-Llibs/openjpeg/qtc/build-openjpeg-mingw64-Debug/debug
                 # LIBS        += -Wl,-Llibs/openjpeg/qtc/openjpeg/release
+                # LIBS        += -Wl,-Llibs/libpng/qtc/build-png-mingw64-Debug/debug
+                # LIBS        += -Wl,-Llibs/libpng/qtc/png/release
                 # LIBS        += -Wl,-Llibs/freetype2/objs/.libs
                 # LIBS        += -Wl,-Llibs/freetype2/qtc/build-freetype-mingw64-Debug/debug
                 # LIBS        += -Wl,-Llibs/freetype2/qtc/freetype/release 
@@ -151,6 +153,7 @@ win32 {
 \
         -ljpeg \
         -lopenjpeg \
+        -lpng \
         -lfreetype
     }
 #exists($(HOME)/opt/podofo09/) {
