@@ -143,7 +143,9 @@ win32 {
 \
 \#        -lQt5AxServer \
 \#        -lQt5Bootstrap \
-        -ljpeg
+\
+        -ljpeg \
+        -lopenjpeg
     }
 #exists($(HOME)/opt/podofo09/) {
 #    message(Using locally built PoDoFo library)
