@@ -83,10 +83,15 @@ else {
                 INCLUDEPATH += libs/poppler/cpp
                 INCLUDEPATH += libs/poppler/$${QTVERS}/src
                 # LIBS        += -Wl,-Llibs/poppler/$${QTVERS}/release
-                LIBS        += -Wl,-Lbin/win32 
-                # LIBS        += -lfreetype
-                # LIBS        += -Wl,-Llibs/freetype2/objs/.libs 
                 # LIBS        += -Wl,-Llibs/libjpeg/.libs
+                # LIBS        += -Wl,-Llibs/libjpeg/qtc/build-jpeg-mingw64-Debug/debug
+                # LIBS        += -Wl,-Llibs/libjpeg/qtc/jpeg/release
+                # LIBS        += -Wl,-Llibs/openjpeg/qtc/build-openjpeg-mingw64-Debug/debug
+                # LIBS        += -Wl,-Llibs/openjpeg/qtc/openjpeg/release
+                # LIBS        += -Wl,-Llibs/freetype2/objs/.libs
+                # LIBS        += -Wl,-Llibs/freetype2/qtc/build-freetype-mingw64-Debug/debug
+                # LIBS        += -Wl,-Llibs/freetype2/qtc/freetype/release 
+                LIBS        += -Wl,-Lbin/win32 
                 }
             }
         }
@@ -145,7 +150,8 @@ win32 {
 \#        -lQt5Bootstrap \
 \
         -ljpeg \
-        -lopenjpeg
+        -lopenjpeg \
+        -lfreetype
     }
 #exists($(HOME)/opt/podofo09/) {
 #    message(Using locally built PoDoFo library)
