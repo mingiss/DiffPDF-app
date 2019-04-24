@@ -17,7 +17,7 @@ CXXFLAGS      = -pipe -fno-keep-inline-dllexport -std=c++11 -g -frtti -Wall -Wex
 INCPATH       = -I. -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport' -I'libs/poppler/cpp' -I'libs/poppler/qt5/src' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore' -I'debug' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++'
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lqtmaind -LC:\mingw482\mingw32\lib -LC:\Utils\icu32_52_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -LD:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32/lib -Wl,-Lbin/win32 -lpoppler-qt5 -Wl,-LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lQt5Widgets532 -lQt5Xml532 -lQt5PrintSupport532 -ljpeg -lopenjpeg -lpng -lfreetype -lQt5Guid -lQt5Cored 
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lqtmaind -LC:\mingw482\mingw32\lib -LC:\Utils\icu32_52_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -LD:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32/lib -Wl,-Lbin/win32 -lpoppler-qt5 -Wl,-LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lQt5Widgets532 -lQt5Xml532 -lQt5PrintSupport532 -ljpeg -lopenjpeg -lpng -ltiff -lfreetype -lQt5Guid -lQt5Cored 
 QMAKE         = D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/bin/qmake.exe
 IDC           = idc
 IDL           = midl
