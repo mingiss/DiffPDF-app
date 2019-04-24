@@ -11,35 +11,35 @@ MAKEFILE      = Makefile.Debug
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -Dpoppler_cpp_EXPORTS -Dpoppler_qt5_EXPORTS -DQT_STATIC -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -pipe -fno-keep-inline-dllexport -g -Wall -Wextra $(DEFINES)
 CXXFLAGS      = -pipe -fno-keep-inline-dllexport -std=c++11 -g -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I. -I"D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\include\QtWidgets" -I"D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\include\QtPrintSupport" -I"libs\poppler\cpp" -I"libs\poppler\qt5\src" -I"D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\include" -I"D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\include\QtGui" -I"D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\include\QtCore" -I"debug" -I"D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\win32-g++"
+INCPATH       = -I. -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport' -I'libs/poppler/cpp' -I'libs/poppler/qt5/src' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore' -I'debug' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++'
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        -lmingw32 -LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lqtmaind -LC:\mingw482\mingw32\lib -LC:\Utils\icu32_52_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -LD:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32/lib -Wl,-LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lQt5PrintSupport -lQt5AxContainer -lQt5AxBase -lglu32 -lopengl32 -lole32 -loleaut32 -luser32 -lgdi32 -ladvapi32 -luuid -lQt5Widgets -lQt5Gui -lQt5Core -lpoppler-qt5 -Wl,-Llibs/poppler/qt5/release -lQt5Guid -lQt5Cored 
-QMAKE         = D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\qmake.exe
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lqtmaind -LC:\mingw482\mingw32\lib -LC:\Utils\icu32_52_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -LD:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32/lib -Wl,-Lbin/win32 -lpoppler-qt5 -Wl,-LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lQt5Widgets532 -lQt5Xml532 -lQt5PrintSupport532 -ljpeg -lQt5Guid -lQt5Cored 
+QMAKE         = D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/bin/qmake.exe
 IDC           = idc
 IDL           = midl
-ZIP           = zip -r -9
+ZIP           = 
 DEF_FILE      = 
 RES_FILE      = 
-COPY          = copy /y
-SED           = $(QMAKE) -install sed
-COPY_FILE     = $(COPY)
-COPY_DIR      = xcopy /s /q /y /i
-DEL_FILE      = del
+COPY          = cp -f
+SED           = sed
+COPY_FILE     = cp -f
+COPY_DIR      = cp -f -R
+DEL_FILE      = rm -f
 DEL_DIR       = rmdir
-MOVE          = move
-CHK_DIR_EXISTS= if not exist
-MKDIR         = mkdir
-INSTALL_FILE    = $(COPY_FILE)
-INSTALL_PROGRAM = $(COPY_FILE)
+MOVE          = mv -f
+CHK_DIR_EXISTS= test -d
+MKDIR         = mkdir -p
+INSTALL_FILE    = cp -f
+INSTALL_PROGRAM = cp -f
 INSTALL_DIR     = $(COPY_DIR)
 
 ####### Output directory
 
-OBJECTS_DIR   = debug
+OBJECTS_DIR   = debug/
 
 ####### Files
 
@@ -53,14 +53,14 @@ SOURCES       = mainwindow.cpp \
 		sequence_matcher.cpp \
 		main.cpp \
 		lineedit.cpp \
-		label.cpp debug\qrc_resources.cpp \
-		debug\moc_mainwindow.cpp \
-		debug\moc_aboutform.cpp \
-		debug\moc_optionsform.cpp \
-		debug\moc_helpform.cpp \
-		debug\moc_saveform.cpp \
-		debug\moc_lineedit.cpp \
-		debug\moc_label.cpp
+		label.cpp debug/qrc_resources.cpp \
+		debug/moc_mainwindow.cpp \
+		debug/moc_aboutform.cpp \
+		debug/moc_optionsform.cpp \
+		debug/moc_helpform.cpp \
+		debug/moc_saveform.cpp \
+		debug/moc_lineedit.cpp \
+		debug/moc_label.cpp
 OBJECTS       = debug/mainwindow.o \
 		debug/textitem.o \
 		debug/aboutform.o \
@@ -83,9 +83,9 @@ OBJECTS       = debug/mainwindow.o \
 
 DIST          = 
 QMAKE_TARGET  = diffpdf
-DESTDIR        = debug\ #avoid trailing-slash linebreak
+DESTDIR        = debug/ #avoid trailing-slash linebreak
 TARGET         = diffpdf.exe
-DESTDIR_TARGET = debug\diffpdf.exe
+DESTDIR_TARGET = debug/diffpdf.exe
 
 ####### Implicit rules
 
@@ -117,10 +117,10 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) diffpdf.zip $(SOURCES) $(DIST) diffpdf.pro D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\spec_pre.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\qdevice.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\device_config.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\common\shell-win32.conf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\qconfig.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_axbase.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_axbase_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_axcontainer.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_axcontainer_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_axserver.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_axserver_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_bluetooth.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_bluetooth_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_bootstrap_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_clucene_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_concurrent.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_concurrent_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_core.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_core_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_declarative.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_declarative_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_designer.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_designer_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_designercomponents_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_enginio.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_enginio_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_gui.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_gui_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_help.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_help_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_multimedia.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_multimedia_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_multimediawidgets.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_network.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_network_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_nfc.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_nfc_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_opengl.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_opengl_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_openglextensions.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_openglextensions_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_platformsupport_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_positioning.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_positioning_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_printsupport.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_printsupport_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_qml.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_qml_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_qmltest.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_qmltest_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_quick.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_quick_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_quickparticles_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_quickwidgets.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_quickwidgets_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_script.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_script_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_scripttools.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_scripttools_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_sensors.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_sensors_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_serialport.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_serialport_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_sql.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_sql_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_svg.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_svg_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_testlib.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_testlib_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_uitools.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_uitools_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_webkit.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_webkit_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_webkitwidgets.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_webkitwidgets_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_websockets.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_websockets_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_widgets.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_widgets_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_winextras.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_winextras_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_xml.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_xml_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_xmlpatterns.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\qt_functions.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\qt_config.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\win32\qt_config.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\win32-g++\qmake.conf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\spec_post.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\exclusive_builds.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\default_pre.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\win32\default_pre.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\resolve_config.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\exclusive_builds_post.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\default_post.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\build_pass.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\win32\rtti.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\precompile_header.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\warn_on.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\qt.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\resources.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\moc.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\win32\opengl.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\win32\windows.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\testcase_targets.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\exceptions.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\yacc.prf D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\mkspecs\features\lex.prf diffpdf.pro resources.qrc D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/qtmaind.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Cored.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxContainer.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5AxBase.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Gui.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Core.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Widgets.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Guid.prl diffpdf_cz.ts diffpdf_fr.ts diffpdf_de.ts diffpdf_cz.ts diffpdf_fr.ts diffpdf_de.ts NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES YACCSOURCES YACCSOURCES LEXSOURCES 
+	$(ZIP) diffpdf.zip $(SOURCES) $(DIST) diffpdf.pro D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/spec_pre.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/qdevice.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/device_config.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/common/shell-unix.conf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/qconfig.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_axbase.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_axbase_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_axcontainer.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_axcontainer_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_axserver.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_axserver_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_bluetooth.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_bluetooth_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_bootstrap_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_clucene_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_concurrent.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_concurrent_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_core.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_core_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_declarative.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_declarative_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_designer.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_designer_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_designercomponents_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_enginio.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_enginio_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_gui.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_gui_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_help.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_help_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_multimedia.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_multimedia_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_multimediawidgets.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_multimediawidgets_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_network.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_network_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_nfc.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_nfc_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_opengl.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_opengl_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_openglextensions.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_openglextensions_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_platformsupport_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_positioning.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_positioning_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_printsupport.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_printsupport_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_qml.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_qml_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_qmldevtools_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_qmltest.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_qmltest_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_quick.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_quick_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_quickparticles_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_quickwidgets.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_quickwidgets_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_script.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_script_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_scripttools.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_scripttools_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_sensors.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_sensors_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_serialport.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_serialport_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_sql.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_sql_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_svg.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_svg_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_testlib.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_testlib_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_uitools.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_uitools_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_webkit.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_webkit_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_webkitwidgets.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_webkitwidgets_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_websockets.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_websockets_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_widgets.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_widgets_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_winextras.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_winextras_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_xml.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_xml_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_xmlpatterns.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/modules/qt_lib_xmlpatterns_private.pri D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/qt_functions.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/qt_config.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/win32/qt_config.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++/qmake.conf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/spec_post.prf .qmake.stash D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/exclusive_builds.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/default_pre.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/win32/default_pre.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/resolve_config.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/exclusive_builds_post.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/default_post.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/build_pass.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/win32/rtti.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/precompile_header.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/warn_on.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/qt.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/resources.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/moc.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/win32/opengl.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/win32/windows.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/testcase_targets.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/exceptions.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/yacc.prf D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/features/lex.prf diffpdf.pro resources.qrc D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/qtmaind.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Cored.prl D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib/Qt5Guid.prl diffpdf_cz.ts diffpdf_fr.ts diffpdf_de.ts diffpdf_cz.ts diffpdf_fr.ts diffpdf_de.ts NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) debug\mainwindow.o debug\textitem.o debug\aboutform.o debug\optionsform.o debug\helpform.o debug\saveform.o debug\generic.o debug\sequence_matcher.o debug\main.o debug\lineedit.o debug\label.o debug\qrc_resources.o debug\moc_mainwindow.o debug\moc_aboutform.o debug\moc_optionsform.o debug\moc_helpform.o debug\moc_saveform.o debug\moc_lineedit.o debug\moc_label.o
+	-$(DEL_FILE) debug/mainwindow.o debug/textitem.o debug/aboutform.o debug/optionsform.o debug/helpform.o debug/saveform.o debug/generic.o debug/sequence_matcher.o debug/main.o debug/lineedit.o debug/label.o debug/qrc_resources.o debug/moc_mainwindow.o debug/moc_aboutform.o debug/moc_optionsform.o debug/moc_helpform.o debug/moc_saveform.o debug/moc_lineedit.o debug/moc_label.o
 
 distclean: clean 
 	-$(DEL_FILE) $(DESTDIR_TARGET)
@@ -136,7 +136,7 @@ compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
 compiler_rcc_make_all: debug/qrc_resources.cpp
 compiler_rcc_clean:
-	-$(DEL_FILE) debug\qrc_resources.cpp
+	-$(DEL_FILE) debug/qrc_resources.cpp
 debug/qrc_resources.cpp: resources.qrc \
 		images/icon.png \
 		help_de.html \
@@ -148,11 +148,11 @@ debug/qrc_resources.cpp: resources.qrc \
 		images/left.png \
 		help_fr.html \
 		help_cz.html
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\rcc.exe -name resources resources.qrc -o debug\qrc_resources.cpp
+	D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/bin/rcc.exe -name resources resources.qrc -o debug/qrc_resources.cpp
 
 compiler_moc_header_make_all: debug/moc_mainwindow.cpp debug/moc_aboutform.cpp debug/moc_optionsform.cpp debug/moc_helpform.cpp debug/moc_saveform.cpp debug/moc_lineedit.cpp debug/moc_label.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) debug\moc_mainwindow.cpp debug\moc_aboutform.cpp debug\moc_optionsform.cpp debug\moc_helpform.cpp debug\moc_saveform.cpp debug\moc_lineedit.cpp debug\moc_label.cpp
+	-$(DEL_FILE) debug/moc_mainwindow.cpp debug/moc_aboutform.cpp debug/moc_optionsform.cpp debug/moc_helpform.cpp debug/moc_saveform.cpp debug/moc_lineedit.cpp debug/moc_label.cpp
 debug/moc_mainwindow.cpp: generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QGlobalStatic \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qglobalstatic.h \
@@ -295,7 +295,7 @@ debug/moc_mainwindow.cpp: generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qicon.h \
 		mainwindow.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore mainwindow.hpp -o debug\moc_mainwindow.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore mainwindow.hpp -o debug/moc_mainwindow.cpp
 
 debug/moc_aboutform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QDialog \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qdialog.h \
@@ -399,7 +399,7 @@ debug/moc_aboutform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qvector2d.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qtouchdevice.h \
 		aboutform.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore aboutform.hpp -o debug\moc_aboutform.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore aboutform.hpp -o debug/moc_aboutform.cpp
 
 debug/moc_optionsform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QBrush \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qbrush.h \
@@ -537,7 +537,7 @@ debug/moc_optionsform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QB
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QPair \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QPixmap \
 		optionsform.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore optionsform.hpp -o debug\moc_optionsform.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore optionsform.hpp -o debug/moc_optionsform.cpp
 
 debug/moc_helpform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QMainWindow \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qmainwindow.h \
@@ -643,7 +643,7 @@ debug/moc_helpform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/Q
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qicon.h \
 		helpform.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore helpform.hpp -o debug\moc_helpform.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore helpform.hpp -o debug/moc_helpform.cpp
 
 debug/moc_saveform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QBrush \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qbrush.h \
@@ -750,7 +750,7 @@ debug/moc_saveform.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QBrus
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QPen \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qpen.h \
 		saveform.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore saveform.hpp -o debug\moc_saveform.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore saveform.hpp -o debug/moc_saveform.cpp
 
 debug/moc_lineedit.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QLineEdit \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qlineedit.h \
@@ -859,7 +859,7 @@ debug/moc_lineedit.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/Q
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qpen.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qtextoption.h \
 		lineedit.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore lineedit.hpp -o debug\moc_lineedit.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore lineedit.hpp -o debug/moc_lineedit.cpp
 
 debug/moc_label.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QLabel \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qlabel.h \
@@ -964,7 +964,7 @@ debug/moc_label.cpp: D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QLab
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qvector2d.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qtouchdevice.h \
 		label.hpp
-	D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore label.hpp -o debug\moc_label.cpp
+	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore label.hpp -o debug/moc_label.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1215,7 +1215,7 @@ debug/mainwindow.o: mainwindow.cpp aboutform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QSplitter \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qsplitter.h \
 		emptyconts.cpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o mainwindow.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/mainwindow.o mainwindow.cpp
 
 debug/textitem.o: textitem.cpp textitem.hpp \
 		generic.hpp \
@@ -1344,7 +1344,7 @@ debug/textitem.o: textitem.cpp textitem.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qfiledevice.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QFile \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextStream
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\textitem.o textitem.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/textitem.o textitem.cpp
 
 debug/aboutform.o: aboutform.cpp aboutform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QDialog \
@@ -1479,7 +1479,7 @@ debug/aboutform.o: aboutform.cpp aboutform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qtextcursor.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qtextformat.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qpen.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\aboutform.o aboutform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/aboutform.o aboutform.cpp
 
 debug/optionsform.o: optionsform.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QGlobalStatic \
@@ -1653,7 +1653,7 @@ debug/optionsform.o: optionsform.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QSpinBox \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QTabWidget \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QVBoxLayout
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\optionsform.o optionsform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/optionsform.o optionsform.cpp
 
 debug/helpform.o: helpform.cpp helpform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QMainWindow \
@@ -1785,7 +1785,7 @@ debug/helpform.o: helpform.cpp helpform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qtextformat.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qpen.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextStream
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\helpform.o helpform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/helpform.o helpform.cpp
 
 debug/saveform.o: saveform.cpp saveform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QBrush \
@@ -1930,7 +1930,7 @@ debug/saveform.o: saveform.cpp saveform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QRadioButton \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qradiobutton.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QVBoxLayout
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\saveform.o saveform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/saveform.o saveform.cpp
 
 debug/generic.o: generic.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QGlobalStatic \
@@ -2062,7 +2062,7 @@ debug/generic.o: generic.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QUrl \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qurl.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qurlquery.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\generic.o generic.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/generic.o generic.cpp
 
 debug/sequence_matcher.o: sequence_matcher.cpp sequence_matcher.hpp \
 		generic.hpp \
@@ -2185,7 +2185,7 @@ debug/sequence_matcher.o: sequence_matcher.cpp sequence_matcher.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qbrush.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QHash \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\sequence_matcher.o sequence_matcher.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/sequence_matcher.o sequence_matcher.cpp
 
 debug/main.o: main.cpp mainwindow.hpp \
 		generic.hpp \
@@ -2360,7 +2360,7 @@ debug/main.o: main.cpp mainwindow.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qtabbar.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qrubberband.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qframe.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o main.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/main.o main.cpp
 
 debug/lineedit.o: lineedit.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QGlobalStatic \
@@ -2504,7 +2504,7 @@ debug/lineedit.o: lineedit.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QMimeData \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qmimedata.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QDragEnterEvent
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\lineedit.o lineedit.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/lineedit.o lineedit.cpp
 
 debug/label.o: label.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QGlobalStatic \
@@ -2646,31 +2646,31 @@ debug/label.o: label.cpp generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qmimedata.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QDragEnterEvent \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/QMouseEvent
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\label.o label.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/label.o label.cpp
 
 debug/qrc_resources.o: debug/qrc_resources.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\qrc_resources.o debug\qrc_resources.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/qrc_resources.o debug/qrc_resources.cpp
 
 debug/moc_mainwindow.o: debug/moc_mainwindow.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_mainwindow.o debug\moc_mainwindow.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_mainwindow.o debug/moc_mainwindow.cpp
 
 debug/moc_aboutform.o: debug/moc_aboutform.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_aboutform.o debug\moc_aboutform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_aboutform.o debug/moc_aboutform.cpp
 
 debug/moc_optionsform.o: debug/moc_optionsform.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_optionsform.o debug\moc_optionsform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_optionsform.o debug/moc_optionsform.cpp
 
 debug/moc_helpform.o: debug/moc_helpform.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_helpform.o debug\moc_helpform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_helpform.o debug/moc_helpform.cpp
 
 debug/moc_saveform.o: debug/moc_saveform.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_saveform.o debug\moc_saveform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_saveform.o debug/moc_saveform.cpp
 
 debug/moc_lineedit.o: debug/moc_lineedit.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_lineedit.o debug\moc_lineedit.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_lineedit.o debug/moc_lineedit.cpp
 
 debug/moc_label.o: debug/moc_label.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_label.o debug\moc_label.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/moc_label.o debug/moc_label.cpp
 
 ####### Install
 

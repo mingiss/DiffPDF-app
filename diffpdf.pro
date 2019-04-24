@@ -33,24 +33,27 @@ CODECFORTR    = UTF-8
 QMAKE_CXXFLAGS += -std=c++11
 QTVERS = qt4
 win32 {
-    CONFIG += release
+    DEFINES += poppler_cpp_EXPORTS
+    DEFINES += poppler_qt5_EXPORTS
+    DEFINES += QT_STATIC
+    CONFIG  += staticlib
+    CONFIG  += release
 #   QMAKE_CC = gcc
 #   QMAKE_CXX = g++
-    COMPNAME = $(COMPUTERNAME)
-    eval(COMPNAME = "IT585") {
-        QTMINGWHOME = D:/kp/bin/Qt/5.10.0/mingw53_32
-        }
-    eval(COMPNAME = "BAJ4XP") {
+#    COMPNAME = $$(COMPUTERNAME)
+#    contains(COMPNAME, IT585) {
+#        # QTMINGWHOME = D:/kp/bin/Qt/5.10.0/mingw53_32
+#        QTMINGWHOME = D:/kp/bin/Qt/Qt5.10.0/5.10.0/mingw53_32  
+#        QTVERS = qt5
+#        }
+#    contains(COMPNAME, BAJ4XP) {
         QTMINGWHOME = D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32
         QTVERS = qt5
-        }
+#        }
+    INCLUDEPATH += $${QTMINGWHOME}/include
     INCLUDEPATH += $${QTMINGWHOME}/include/QtWidgets
-    INCLUDEPATH += $${QTMINGWHOME}/include/QtPrintSupport 
-    LIBS        += -Wl,-L$${QTMINGWHOME}/lib 
-    LIBS	    += -lQt5PrintSupport
-    LIBS	    += -lQt5AxContainer
-    }
-LIBS	     += -lpoppler-$${QTVERS}
+    INCLUDEPATH += $${QTMINGWHOME}/include/QtPrintSupport
+    } 
 exists($(HOME)/opt/poppler020/) {
     message(Using locally built Poppler library)
     INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/cpp
@@ -79,12 +82,68 @@ else {
                 # INCLUDEPATH += ../../../poppler/src_kp/poppler/$${QTVERS}/src
                 INCLUDEPATH += libs/poppler/cpp
                 INCLUDEPATH += libs/poppler/$${QTVERS}/src
-                LIBS        += -Wl,-Llibs/poppler/$${QTVERS}/release 
+                # LIBS        += -Wl,-Llibs/poppler/$${QTVERS}/release
+                LIBS        += -Wl,-Lbin/win32 
                 # LIBS        += -lfreetype
                 # LIBS        += -Wl,-Llibs/freetype2/objs/.libs 
+                # LIBS        += -Wl,-Llibs/libjpeg/.libs
                 }
             }
         }
+    }
+LIBS	     += -lpoppler-$${QTVERS}
+win32 {
+    LIBS += -Wl,-L$${QTMINGWHOME}/lib \
+        -lQt5Widgets \
+        -lQt5Xml \
+        -lQt5PrintSupport \
+\
+\#        -lQt5Core \
+\#        -lQt5Gui \
+\#        -lQt5AxContainer \
+\#        -lQt5Qml \
+\#        -lQt5AxBase \
+\#        -lQt5UiTools \
+\
+\#        -lEnginio \
+\#        -lQt5Bluetooth \
+\#        -lQt5CLucene \
+\#        -lQt5Concurrent \
+\#        -lQt5Declarative \
+\#        -lQt5Designer \
+\#        -lQt5DesignerComponents \
+\#        -lQt5Help \
+\#        -lQt5Multimedia \
+\#        -lQt5MultimediaQuick_p \
+\#        -lQt5MultimediaWidgets \
+\#        -lQt5Network \
+\#        -lQt5Nfc \
+\#        -lQt5OpenGL \
+\#        -lQt5OpenGLExtensions \
+\#        -lQt5PlatformSupport \
+\#        -lQt5Positioning \
+\#        -lQt5QmlDevTools \
+\#        -lQt5Quick \
+\#        -lQt5QuickParticles \
+\#        -lQt5QuickTest \
+\#        -lQt5QuickWidgets \
+\#        -lQt5Script \
+\#        -lQt5ScriptTools \
+\#        -lQt5Sensors \
+\#        -lQt5SerialPort \
+\#        -lQt5Sql \
+\#        -lQt5Svg \
+\#        -lQt5Test \
+\#        -lQt5WebKit \
+\#        -lQt5WebKitWidgets \
+\#        -lQt5WebSockets \
+\#        -lQt5WinExtras \
+\#        -lQt5XmlPatterns \
+\#        -lqtmain
+\
+\#        -lQt5AxServer \
+\#        -lQt5Bootstrap \
+        -ljpeg
     }
 #exists($(HOME)/opt/podofo09/) {
 #    message(Using locally built PoDoFo library)
