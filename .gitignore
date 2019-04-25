@@ -5,7 +5,7 @@ NOTES.txt
 *.lout
 diffpdf
 #Makefile*
-*.a
+#*.a
 *.o
 object_script*
 *.py[co]

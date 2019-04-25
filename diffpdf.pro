@@ -1,4 +1,4 @@
-# NOTES.txt
+﻿# NOTES.txt
 # CHANGES
 # README
 # help.html
@@ -95,7 +95,7 @@ else {
                 # LIBS        += -Wl,-Llibs/freetype2/objs/.libs
                 # LIBS        += -Wl,-Llibs/freetype2/qtc/build-freetype-mingw64-Debug/debug
                 # LIBS        += -Wl,-Llibs/freetype2/qtc/freetype/release 
-                LIBS        += -Wl,-Lbin/win32 
+                LIBS        += -Wl,-Llibs/win32 
                 }
             }
         }
