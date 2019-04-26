@@ -1,0 +1,14 @@
+diff --git a/module/core/configuration.py b/module/core/configuration.py
+index 435035f..65ae103 100644
+--- a/module/core/configuration.py
++++ b/module/core/configuration.py
+@@ -56,6 +56,9 @@ class Configuration(object):
+                  "value": "X:/bin/utils/texgr/texware/dvidiffer.exe "
+                           "--diff-multi -s -f -w --tolerance 65536",
+                  "type": "str"}
++    PDFDIFFER = {"section": SEC_COMPARER, "key": "pdfdiffer",
++                 "value": "D:/bin/utils/texgr/DiffPDF/dpdf.bat",
++                 "type": "str"}
+     SHOW_DIFF_SUFFIX = {"section": SEC_COMPARER, "key": "show_diff_suffix", "value": ".bat", "type": "str"}
+     SHOW_DIFF_RELPATHS = {"section": SEC_COMPARER, "key": "show_diff_relpaths", "value": True, "type": "bool"}
+     SHOW_PDF_DIFF = {"section": SEC_COMPARER, "key": "show_pdf_diff", "value": "start kdiff3", "type": "str"}

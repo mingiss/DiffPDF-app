@@ -1,0 +1,34 @@
+diff --git a/module/core/comparer.py b/module/core/comparer.py
+index 6e6d9fd..183919f 100644
+--- a/module/core/comparer.py
++++ b/module/core/comparer.py
+@@ -39,6 +39,7 @@ class Comparer(object):
+         self.compare_order = self.cnf.get_conf_value(self.cnf.COMPARE_ORDER)
+ 
+         self.dvidiffer = self.cnf.get_conf_value(self.cnf.DVIDIFFER)
++        self.pdfdiffer = self.cnf.get_conf_value(self.cnf.PDFDIFFER)
+         self.print_output = print_output
+         self.show_pdf_diff = self.cnf.get_conf_value(self.cnf.SHOW_PDF_DIFF)
+         self.show_bin_diff = self.cnf.get_conf_value(self.cnf.SHOW_BIN_DIFF)
+@@ -94,8 +95,8 @@ class Comparer(object):
+             self.log.debug("Subprocess finished with returncode {}!"
+                            .format(self.returncode))
+ 
+-    def compare_dvi(self, file1, file2, workdir):
+-        cmd_args = "%s %s %s" % (self.dvidiffer, file1, file2)
++    def compare_files(self, file1, file2, workdir, differer):
++        cmd_args = "%s %s %s" % (differer, file1, file2)
+         thread = threading.Thread(target=self.run_cmd_process,
+                                   args=(cmd_args, workdir))
+         thread.start()
+@@ -210,7 +211,9 @@ class Comparer(object):
+ 
+         # comparing main files
+         if main_suffix in [self.DVI_SUFFIX, self.HTPICTURE_SUFFIX]:
+-            main_match = self.compare_dvi(file1, file2, workdir)
++            main_match = self.compare_files(file1, file2, workdir, self.dvidiffer)
++        if main_suffix in [self.PDF_SUFFIX]:
++            main_match = self.compare_files(file1, file2, workdir, self.pdfdiffer)
+         else:
+             main_match = self.compare_binary(file1, file2, workdir,
+                                              self.strings_to_ignore)
