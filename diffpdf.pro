@@ -1,9 +1,9 @@
-﻿# NOTES.txt
+# NOTES.txt
 # CHANGES
 # README
 # help.html
 # diffpdf.1
-#DEFINES	     += DEBUG
+DEFINES	     += DEBUG
 HEADERS	     += mainwindow.hpp
 SOURCES      += mainwindow.cpp
 HEADERS	     += textitem.hpp

@@ -11,13 +11,13 @@ MAKEFILE      = Makefile.Release
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -Dpoppler_cpp_EXPORTS -Dpoppler_qt5_EXPORTS -DQT_STATIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -DDEBUG -Dpoppler_cpp_EXPORTS -Dpoppler_qt5_EXPORTS -DQT_STATIC -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -pipe -fno-keep-inline-dllexport -O2 -Wall -Wextra $(DEFINES)
 CXXFLAGS      = -pipe -fno-keep-inline-dllexport -std=c++11 -O2 -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I. -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport' -I'libs/poppler/cpp' -I'libs/poppler/qt5/src' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore' -I'release' -I'D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++'
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
-LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lqtmain -LC:\mingw482\mingw32\lib -LC:\Utils\icu32_52_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -LD:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32/lib -Wl,-Lbin/win32 -lpoppler-qt5 -Wl,-LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lQt5Widgets532 -lQt5Xml532 -lQt5PrintSupport532 -ljpeg -lopenjpeg -lpng -ltiff -lfreetype -lQt5Gui -lQt5Core 
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lqtmain -LC:\mingw482\mingw32\lib -LC:\Utils\icu32_52_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -LD:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32/lib -Wl,-Llibs/win32 -lpoppler-qt5 -Wl,-LD:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/lib -lQt5Widgets532 -lQt5Xml532 -lQt5PrintSupport532 -ljpeg -lopenjpeg -lpng -ltiff -lfreetype -lQt5Gui -lQt5Core 
 QMAKE         = D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/bin/qmake.exe
 IDC           = idc
 IDL           = midl
@@ -294,6 +294,7 @@ release/moc_mainwindow.cpp: generic.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qmainwindow.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qicon.h \
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextStream \
 		mainwindow.hpp
 	'D:\kp\bin\Qt\Qt5.3.2\5.3\mingw482_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/mkspecs/win32-g++ -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtPrintSupport -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/cpp -IF:/kp/src/vtex/pdf/DiffPDF/src/src_kp/libs/poppler/qt5/src -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui -ID:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore mainwindow.hpp -o release/moc_mainwindow.cpp
 
@@ -1135,6 +1136,7 @@ release/mainwindow.o: mainwindow.cpp aboutform.hpp \
 		mainwindow.hpp \
 		saveform.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QSharedPointer \
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextStream \
 		sequence_matcher.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QHash \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QStringList \
@@ -2329,6 +2331,7 @@ release/main.o: main.cpp mainwindow.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qmainwindow.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtGui/qicon.h \
+		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextStream \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QApplication \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/qapplication.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qcoreapplication.h \
@@ -2344,7 +2347,6 @@ release/main.o: main.cpp mainwindow.hpp \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qsettings.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextCodec \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qtextcodec.h \
-		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTextStream \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/QTranslator \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtCore/qtranslator.h \
 		D:/kp/bin/Qt/Qt5.3.2/5.3/mingw482_32/include/QtWidgets/QComboBox \

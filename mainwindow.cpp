@@ -50,6 +50,8 @@ const char* MainWindow::m_apszInitialColors[NumOfDiffTypes] = { "red", "green", 
 const char* MainWindow::m_apszColorSettings[NumOfDiffTypes] = { "BaseColor", "InsColor", "DelColor", "RepColor" };
 const int MainWindow::m_aiDiffTypeMasks[NumOfDiffTypes] = { 0, DIFF_TYPE_INSERT, DIFF_TYPE_DELETE, DIFF_TYPE_REPLACE };
 
+QTextStream MainWindow::outStream(stdout);
+
 #include "emptyconts.cpp"
 
 MainWindow::MainWindow(const Debug debug,
@@ -67,6 +69,8 @@ MainWindow::MainWindow(const Debug debug,
       debug(debug),
       m_pEmptyDoc(NULL)
 {
+    batchMode = false;
+
     currentPath = QDir::homePath();
     QSettings settings;
     for (int ix(0); ix < NumOfDiffTypes; ix++)
@@ -656,9 +660,21 @@ void MainWindow::initialize(const QString &filename1,
         updateUi();
 }
 
+void MainWindow::warning(const QString &title, const QString &text)
+{
+    if (batchMode)
+    {
+        outStream << title << ": " << text << '\n';
+        outStream.flush();
+    }
+    else QMessageBox::warning(this, title, text);
+}
+
 int MainWindow::initialize_batch(const QString &filename1,
                             const QString &filename2)
 {
+    batchMode = true;
+
     setFile1(filename1);
     setFile2(filename2);
     int err = compare();
@@ -1239,7 +1255,7 @@ void MainWindow::setFile1(QString filename)
                 tr("PDF files (*.pdf)"));
     if (!filename.isEmpty()) {
         if (filename == filename2LineEdit->text()) {
-            QMessageBox::warning(this, tr("DiffPDF — Error"),
+            warning(tr("DiffPDF — Error"),
                     tr("Cannot compare a file to itself."));
             return;
         }
@@ -1278,7 +1294,7 @@ void MainWindow::setFile2(QString filename)
                 tr("PDF files (*.pdf)"));
     if (!filename.isEmpty()) {
         if (filename == filename1LineEdit->text()) {
-            QMessageBox::warning(this, tr("DiffPDF — Error"),
+            warning(tr("DiffPDF — Error"),
                     tr("Cannot compare a file to itself."));
             return;
         }
@@ -1313,10 +1329,10 @@ PdfDocument MainWindow::getPdf(const QString &filename)
 {
     PdfDocument pdf(Poppler::Document::load(filename));
     if (!pdf)
-        QMessageBox::warning(this, tr("DiffPDF — Error"),
+        warning(tr("DiffPDF — Error"),
                 tr("Cannot load '%1'.").arg(filename));
     else if (pdf->isLocked()) {
-        QMessageBox::warning(this, tr("DiffPDF — Error"),
+        warning(tr("DiffPDF — Error"),
                 tr("Cannot read a locked PDF ('%1').").arg(filename));
 #if QT_VERSION >= 0x040600
         pdf.clear();

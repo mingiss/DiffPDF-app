@@ -28,6 +28,7 @@
 #include <QList>
 #include <QMainWindow>
 #include <QPen>
+#include <QTextStream>
 
 class Label;
 class LineEdit;
@@ -96,6 +97,9 @@ public:
     void save(const QString& sSaveFName);
 
 private:
+    // wrapper to QMessageBox::warning()
+    void warning(const QString &title, const QString &text);
+
     enum Difference {NoDifference, TextualDifference, VisualDifference};
 
     void createWidgets(const QString &filename1, const QString &filename2,
@@ -225,6 +229,8 @@ private:
     const QString language;
     Debug debug;
 
+    bool batchMode;
+    static QTextStream outStream;
     PdfDocument m_pEmptyDoc;
 
     static const int m_aiDiffTypeMasks[NumOfDiffTypes];

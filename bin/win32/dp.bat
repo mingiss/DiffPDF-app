@@ -8,6 +8,8 @@
 ::    ms001\compilation1\www\ms001.pdf ms001\compilation2\www\ms001.pdf
 ::    ms001\compilation1\print\ms001.pdf ms001\compilation2\print\ms001.pdf
 
+:: set QT_PLUGIN_PATH=D:\bin\utils\texgr\DiffPDF\plugins 
+
 set suffix=%2
 if [%suffix%x]==[x] set suffix=pdf
 
