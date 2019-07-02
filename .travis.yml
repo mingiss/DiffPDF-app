@@ -1,0 +1,24 @@
+language: generic
+sudo: false
+
+script:
+  - source ./build.sh
+
+addons:
+  apt:
+    packages:
+    - gcc
+    - g++
+    - make
+    - automake
+    - autoconf
+    - debhelper
+    - qt4-qmake
+    - libqt4-dev
+    - qt4-linguist-tools
+    - libpoppler-qt4-dev
+    - libpoppler-cpp-dev
+    - hardening-wrapper
+
+notifications:
+  email: false
