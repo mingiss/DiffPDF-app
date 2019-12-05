@@ -1,3 +1,0 @@
-X:\bin\utils\texgr\DiffPDF 
-D:\bin\utils\texgr\DiffPDF 
-D:\kp\bin\diffpdf.bat  
