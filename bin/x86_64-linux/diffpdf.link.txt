@@ -1,0 +1,2 @@
+linux orig (?) executable:
+/home/mingis/F/kp/src/vtex/pdf/DiffPDF/bin_arc/kp/bin/diffpdf

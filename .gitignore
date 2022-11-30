@@ -3,7 +3,7 @@ mailinglist.txt
 NOTES.txt
 *.qm
 *.lout
-diffpdf
+#diffpdf
 #Makefile*
 #*.a
 *.o
