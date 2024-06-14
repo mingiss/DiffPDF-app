@@ -24,4 +24,4 @@ if "%errorlevel%" == "0" (
   echo !Error: files are different
 )
 
-exit %errorlevel%
+exit /B %errorlevel%
